@@ -18,6 +18,7 @@ export default function GlassCard({
         "backdrop-blur-xl",
         "shadow-xl",
         "p-6",
+        "text-slate-900",
         className
       )}
     >

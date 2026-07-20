@@ -1,38 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-scroll";
+import clsx from "clsx";
 
 import Button from "../../../shared/ui/Button";
 import Logo from "../../../shared/ui/Logo";
 import Container from "../../../shared/ui/Container";
-import GlassBlob from "../../../shared/ui/GlassBlob";
-
-const navigation = [
-  {
-    name: "Platform",
-    to: "platform",
-  },
-  {
-    name: "Solutions",
-    to: "solutions",
-  },
-  {
-    name: "Marketplace",
-    to: "marketplace",
-  },
-  {
-    name: "Technology",
-    to: "technology",
-  },
-  {
-    name: "Contact",
-    to: "footer",
-  },
-];
+import { navigation } from "../constants/landing.constants";
+import { scrollToId, NAV_OFFSET } from "../utils/scroll";
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const go = (id: string) => {
+    setOpen(false);
+    scrollToId(id);
+  };
 
   return (
     <motion.header
@@ -43,83 +35,92 @@ export default function Navigation() {
     >
       <Container>
         <nav
-          className="relative overflow-hidden mt-5 rounded-2xl border border-white/20 bg-[rgba(255,255,255,0.08)] backdrop-blur-[18px] shadow-md"
+          className={clsx(
+            "mt-4 flex items-center justify-between rounded-2xl border px-5 py-3 transition-all duration-300",
+            scrolled
+              ? "border-slate-200/70 bg-white/85 shadow-lg backdrop-blur-xl"
+              : "border-white/40 bg-white/40 backdrop-blur-md",
+          )}
           style={{ WebkitBackdropFilter: "blur(18px)" }}
         >
-          <div className="absolute inset-0 -z-10">
-            <GlassBlob />
+          <button
+            onClick={() => scrollToId("top")}
+            aria-label="AgriAid home"
+            className="cursor-pointer"
+          >
+            <Logo className="h-10 w-auto" />
+          </button>
+
+          <div className="hidden items-center gap-8 lg:flex">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.to}
+                spy
+                smooth
+                duration={600}
+                offset={NAV_OFFSET}
+                activeClass="nav-active"
+                className="nav-link cursor-pointer text-sm font-semibold text-slate-700 transition hover:text-[#1B6D35]"
+              >
+                {item.name}
+              </Link>
+            ))}
           </div>
 
-          <div className="flex items-center justify-between px-6 py-4">
-            <Logo className="h-12 w-auto" />
+          <div className="hidden items-center gap-3 lg:flex">
+            <Button
+              variant="outline"
+              className="border-slate-300 text-slate-800"
+              onClick={() => go("get-started")}
+            >
+              Sign In
+            </Button>
+            <Button
+              variant="primary"
+              glassy
+              onClick={() => go("get-started")}
+            >
+              Get Started
+            </Button>
+          </div>
 
-            <div className="hidden gap-8 lg:flex">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.to}
-                  smooth
-                  duration={600}
-                  className="cursor-pointer font-medium text-slate-900 transition hover:text-green-700 drop-shadow-sm"
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
+          <button
+            className="text-slate-800 lg:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <X /> : <Menu />}
+          </button>
+        </nav>
 
-            <div className="hidden items-center gap-3 lg:flex">
+        {open && (
+          <div className="mt-2 space-y-1 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl lg:hidden">
+            {navigation.map((item) => (
+              <button
+                key={item.name}
+                onClick={() => go(item.to)}
+                className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-slate-700 transition hover:bg-[#EAF7EE] hover:text-[#1B6D35]"
+              >
+                {item.name}
+              </button>
+            ))}
+            <div className="grid gap-2 pt-2">
               <Button
+                fullWidth
                 variant="outline"
-                glassy
-                className="text-slate-950 font-semibold shadow-lg drop-shadow-md"
+                className="border-slate-300 text-slate-800"
+                onClick={() => go("get-started")}
               >
                 Sign In
               </Button>
-
-              <Button
-                variant="primary"
-                size="lg"
-                glassy
-                className="shadow-lg drop-shadow-md"
-              >
+              <Button fullWidth variant="primary" glassy onClick={() => go("get-started")}>
                 Get Started
               </Button>
             </div>
-
-            <button
-              className="lg:hidden"
-              onClick={() => setOpen(!open)}
-            >
-              {open ? <X /> : <Menu />}
-            </button>
           </div>
-
-          {open && (
-            <div className="space-y-4 border-t p-6 lg:hidden">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.to}
-                  smooth
-                  duration={600}
-                  onClick={() => setOpen(false)}
-                  className="block cursor-pointer"
-                >
-                  {item.name}
-                </Link>
-              ))}
-
-              <Button
-                fullWidth
-                variant="primary"
-                glassy
-                className="mt-1"
-              >
-                Get Started
-              </Button>
-            </div>
-          )}
-        </nav>
+        )}
       </Container>
     </motion.header>
   );

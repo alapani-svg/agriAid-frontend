@@ -1,51 +1,33 @@
-const partners = [
-  {
-    name: "MINADER",
-    fullName: "Ministry of Agriculture and Rural Development",
-    icon: "🌾"
-  },
-  {
-    name: "MINFI",
-    fullName: "Ministry of Finance",
-    icon: "💰"
-  },
-  {
-    name: "BEAC",
-    fullName: "Bank of Central African States",
-    icon: "🏦"
-  },
-  {
-    name: "AFRILAND",
-    fullName: "Afriland First Bank",
-    icon: "🏛️"
-  },
-  {
-    name: "SGC",
-    fullName: "Société Générale Cameroun",
-    icon: "🏢"
-  }
-];
+import Container from "../../../../shared/ui/Container";
+import Reveal from "../shared/Reveal";
+import { partners } from "../../constants/landing.constants";
 
 export default function Partnerships() {
   return (
-    <section className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-16 font-headline opacity-100">
-          In Partnership With Cameroon's Sovereign Institutions
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {partners.map((partner, index) => (
-            <div
-              key={partner.name}
-              className={`liquid-glass-card p-8 flex flex-col items-center justify-center text-center afd${index + 1} border-2 border-emerald-200/50 hover:border-emerald-400/70`}
-            >
-              <div className="text-5xl mb-4">{partner.icon}</div>
-              <h3 className="font-bold text-gray-900 text-lg mb-2">{partner.name}</h3>
-              <p className="text-sm text-gray-800 font-medium opacity-90">{partner.fullName}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+    <section className="border-y border-emerald-100 bg-white py-10">
+      <Container>
+        <Reveal>
+          <p className="text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
+            Designed to work with the institutions farmers rely on
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+            {partners.map((p) => (
+              <div
+                key={p.name}
+                className="flex items-baseline gap-2"
+                title={p.full}
+              >
+                <span className="font-headline text-lg font-extrabold text-gray-800">
+                  {p.name}
+                </span>
+                <span className="hidden text-xs text-gray-400 sm:inline">
+                  {p.full}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </Container>
     </section>
   );
 }

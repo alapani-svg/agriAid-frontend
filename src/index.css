@@ -40,6 +40,45 @@
 }
 
 /* ═══════════════════════════════════════════
+   SMOOTH SCROLL & NAV ACTIVE STATE
+═══════════════════════════════════════════ */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 2px;
+  width: 0;
+  border-radius: 2px;
+  background: #2ead53;
+  transition: width 0.25s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.nav-active::after {
+  width: 100%;
+}
+
+.nav-link.nav-active {
+  color: #1b6d35;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ═══════════════════════════════════════════
    LIQUID GLASS CORE SURFACES
 ═══════════════════════════════════════════ */
 .liquid-glass {

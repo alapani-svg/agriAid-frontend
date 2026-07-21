@@ -1,49 +1,43 @@
-const stats = [
-  {
-    number: "12,500+",
-    title: "Cameroon Producers Served",
-    description: "Farmers across all regions"
-  },
-  {
-    number: "847",
-    title: "Registered CIG Cooperatives",
-    description: "Active agricultural groups"
-  },
-  {
-    number: "€2.8M",
-    title: "Total Collateral Audited",
-    description: "Grain receipts processed"
-  },
-  {
-    number: "99.7%",
-    title: "Moisture Standards Met",
-    description: "Quality compliance rate"
-  },
-];
+import Container from "../../../../shared/ui/Container";
+import Reveal from "../shared/Reveal";
+import { stats, statsSource } from "../../constants/landing.constants";
 
 export default function Statistics() {
   return (
-    <section className="py-20 bg-gradient-to-b from-emerald-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((item, index) => (
-            <div
-              key={item.title}
-              className={`liquid-glass-card p-8 text-center afd${index + 1} border-2 border-emerald-200/50 hover:border-emerald-400/70`}
-            >
-              <h2 className="text-5xl sm:text-6xl font-bold text-emerald-600 mb-3 font-headline opacity-100">
-                {item.number}
-              </h2>
-              <p className="text-xl font-bold text-gray-900 mb-2 opacity-100">
-                {item.title}
-              </p>
-              <p className="text-base text-gray-800 font-medium opacity-90">
-                {item.description}
-              </p>
-            </div>
+    <section id="impact" className="bg-emerald-700 py-24 text-white">
+      <Container>
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <span className="mb-3 inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-50">
+            Why it matters
+          </span>
+          <h2 className="font-headline text-3xl font-extrabold tracking-tight sm:text-4xl">
+            A financing gap holding back a whole economy
+          </h2>
+          <p className="mt-4 text-lg leading-relaxed text-emerald-50/90">
+            Agriculture powers Cameroon — yet most producers can't reach the
+            credit that would let them grow.
+          </p>
+        </Reveal>
+
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map((s, i) => (
+            <Reveal key={s.label} delay={(i % 4) * 0.08}>
+              <div className="h-full rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur">
+                <p className="font-headline text-4xl font-extrabold">
+                  {s.value}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-emerald-50/90">
+                  {s.label}
+                </p>
+              </div>
+            </Reveal>
           ))}
         </div>
-      </div>
+
+        <p className="mx-auto mt-8 max-w-3xl text-center text-xs text-emerald-100/70">
+          {statsSource}
+        </p>
+      </Container>
     </section>
   );
 }

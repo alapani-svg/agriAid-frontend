@@ -205,7 +205,7 @@ export default function CTA() {
                   </CtaButton>
 
                   <p className="text-center text-xs text-gray-400">
-                    We respect your privacy. No spam — just onboarding help.
+                    We respect your privacy. No spam, just onboarding help.
                   </p>
                 </form>
               )}

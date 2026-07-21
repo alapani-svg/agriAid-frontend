@@ -10,7 +10,7 @@ export default function Features() {
         <SectionHeading
           eyebrow="Features"
           title="Everything a producer needs in one place"
-          subtitle="From documenting daily activity to unlocking long-term financing — built to be simple, verifiable and useful offline."
+          subtitle="From documenting daily activity to unlocking long-term financing, built to be simple, verifiable and useful offline."
         />
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

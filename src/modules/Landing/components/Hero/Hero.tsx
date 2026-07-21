@@ -119,7 +119,7 @@ export default function Hero() {
 
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-gray-600">
               AgriAid documents your harvests and stock, certifies warehouse
-              deposits, and builds an objective activity history — so producers
+              deposits, and builds an objective activity history, so producers
               can unlock financing of up to 20 years.
             </p>
 

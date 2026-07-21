@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-scroll";
 import clsx from "clsx";
 
-import Logo from "../../../../shared/ui/Logo";
+import LogoBadge from "../shared/LogoBadge";
 import CtaButton from "../shared/CtaButton";
 import Container from "../../../../shared/ui/Container";
 import { navigation } from "../../constants/landing.constants";
@@ -46,9 +46,9 @@ export default function Navigation() {
           <button
             onClick={() => scrollToId("top")}
             aria-label="AgriAid home"
-            className="cursor-pointer"
+            className="cursor-pointer transition-transform duration-200 hover:scale-105"
           >
-            <Logo className="h-9 w-auto" />
+            <LogoBadge badgeClassName="h-10 w-10" wordmarkClassName="text-xl text-gray-900" />
           </button>
 
           <div className="hidden items-center gap-8 lg:flex">

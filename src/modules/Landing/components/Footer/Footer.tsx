@@ -1,6 +1,7 @@
 import { Link } from "react-scroll";
 
 import Container from "../../../../shared/ui/Container";
+import LogoBadge from "../shared/LogoBadge";
 import { NAV_OFFSET } from "../../utils/scroll";
 
 const platformLinks = [
@@ -25,18 +26,12 @@ export default function Footer() {
       <Container>
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-3">
-              <img
-                src="/agriAid-logo.png"
-                alt="AgriAid logo"
-                className="h-11 w-11 rounded-full object-cover"
-              />
-              <span className="font-headline text-xl font-extrabold text-white">
-                AgriAid
-              </span>
-            </div>
+            <LogoBadge
+              badgeClassName="h-11 w-11"
+              wordmarkClassName="text-xl text-white"
+            />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-emerald-100/70">
-              AgriAid turns everyday farm activity into verifiable credit —
+              AgriAid turns everyday farm activity into verifiable credit,
               documenting harvests, certifying stock and connecting Cameroon's
               producers to financing.
             </p>

@@ -27,7 +27,7 @@ export default function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <LogoBadge
-              badgeClassName="h-11 w-11"
+              badgeClassName="h-12 w-12"
               wordmarkClassName="text-xl text-white"
             />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-emerald-100/70">

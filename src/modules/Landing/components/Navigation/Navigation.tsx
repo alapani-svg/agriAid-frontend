@@ -48,7 +48,7 @@ export default function Navigation() {
             aria-label="AgriAid home"
             className="cursor-pointer transition-transform duration-200 hover:scale-105"
           >
-            <LogoBadge badgeClassName="h-10 w-10" wordmarkClassName="text-xl text-gray-900" />
+            <LogoBadge badgeClassName="h-12 w-12" wordmarkClassName="text-xl text-gray-900" />
           </button>
 
           <div className="hidden items-center gap-8 lg:flex">

@@ -102,7 +102,7 @@ export const partners: Partner[] = [
 export const problems: Problem[] = [
   {
     title: "No documented history",
-    text: "Farmers work for years but keep no verifiable record of harvests, storage, or sales — so lenders have nothing to assess.",
+    text: "Farmers work for years but keep no verifiable record of harvests, storage, or sales, so lenders have nothing to assess.",
   },
   {
     title: "No acceptable collateral",
@@ -136,7 +136,7 @@ export const features: Feature[] = [
   {
     icon: ClipboardList,
     title: "Movement documentation",
-    text: "Record harvests, deposits, withdrawals and sales from any device — building a tamper-evident trail.",
+    text: "Record harvests, deposits, withdrawals and sales from any device, building a tamper-evident trail.",
   },
   {
     icon: Gauge,
@@ -151,7 +151,7 @@ export const features: Feature[] = [
   {
     icon: Banknote,
     title: "Financing up to 20 years",
-    text: "Graduated terms — from short working capital to 20-year structural loans — matched to your score.",
+    text: "Graduated terms, from short working capital to 20-year structural loans, matched to your score.",
   },
   {
     icon: Store,
@@ -169,7 +169,7 @@ export const steps: Step[] = [
   {
     icon: ClipboardList,
     title: "Document activity",
-    text: "Log harvests, movements and sales as they happen — no paperwork, works offline-friendly.",
+    text: "Log harvests, movements and sales as they happen, with no paperwork and offline-friendly.",
   },
   {
     icon: Warehouse,
@@ -225,10 +225,10 @@ export const scoreWeights: Weight[] = [
 ];
 
 export const tiers: Tier[] = [
-  { tier: "Building", range: "0 – 39", term: "Short-term working capital" },
-  { tier: "Established", range: "40 – 69", term: "Up to 5-year loans" },
-  { tier: "Strong", range: "70 – 84", term: "Up to 10-year loans" },
-  { tier: "High", range: "85 – 100", term: "Up to 20-year financing" },
+  { tier: "Building", range: "0 to 39", term: "Short-term working capital" },
+  { tier: "Established", range: "40 to 69", term: "Up to 5-year loans" },
+  { tier: "Strong", range: "70 to 84", term: "Up to 10-year loans" },
+  { tier: "High", range: "85 to 100", term: "Up to 20-year financing" },
 ];
 
 export const stats: Stat[] = [
@@ -250,7 +250,7 @@ export const techItems: TechItem[] = [
   {
     icon: Lock,
     title: "Role-based security",
-    text: "Each role — farmer, warehouse, lender, buyer, government — sees only what it should.",
+    text: "Every role (farmer, warehouse, lender, buyer, government) sees only what it should.",
   },
   {
     icon: Wifi,

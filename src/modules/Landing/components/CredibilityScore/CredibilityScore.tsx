@@ -13,7 +13,7 @@ export default function CredibilityScore() {
         <SectionHeading
           eyebrow="Credibility score"
           title="A transparent score, not a black box"
-          subtitle="Producers and lenders see exactly what drives the score — and how it maps to financing terms."
+          subtitle="Producers and lenders see exactly what drives the score, and how it maps to financing terms."
         />
 
         <div className="mt-14 grid gap-8 lg:grid-cols-2">

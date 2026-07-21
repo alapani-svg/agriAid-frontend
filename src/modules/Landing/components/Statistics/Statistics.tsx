@@ -14,7 +14,7 @@ export default function Statistics() {
             A financing gap holding back a whole economy
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-emerald-50/90">
-            Agriculture powers Cameroon — yet most producers can't reach the
+            Agriculture powers Cameroon, yet most producers can't reach the
             credit that would let them grow.
           </p>
         </Reveal>

@@ -10,7 +10,7 @@ export default function Roles() {
         <SectionHeading
           eyebrow="Who it's for"
           title="One ecosystem, every role connected"
-          subtitle="AgriAid gives each participant the tools they need — and a shared, trusted record between them."
+          subtitle="AgriAid gives each participant the tools they need, and a shared, trusted record between them."
         />
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

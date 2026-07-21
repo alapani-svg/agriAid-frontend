@@ -31,7 +31,7 @@ export default function Footer() {
               wordmarkClassName="text-xl text-white"
             />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-emerald-100/70">
-              AgriAid turns everyday farm activity into verifiable credit —
+              AgriAid turns everyday farm activity into verifiable credit,
               documenting harvests, certifying stock and connecting Cameroon's
               producers to financing.
             </p>

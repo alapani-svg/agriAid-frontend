@@ -67,11 +67,10 @@ function ScoreVisual() {
                 20 yrs
               </p>
             </div>
-            <div className="h-px bg-emerald-100" />
             <div>
               <p className="text-xs text-gray-500">Repayment history</p>
               <p className="text-sm font-semibold text-emerald-700">
-                On-time · 12 / 12
+                On-time, 12 / 12
               </p>
             </div>
           </div>
@@ -83,7 +82,7 @@ function ScoreVisual() {
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-gray-900">
-              Certified maize · Warehouse receipt
+              Certified maize warehouse receipt
             </p>
             <p className="text-xs text-emerald-700">Active collateral</p>
           </div>
@@ -142,8 +141,8 @@ export default function Hero() {
             </div>
 
             <p className="mt-5 text-sm text-gray-500">
-              No cost to join · Works on low-bandwidth connections · Your data
-              stays yours
+              No cost to join, works on low-bandwidth connections, and your
+              data stays yours
             </p>
           </motion.div>
 

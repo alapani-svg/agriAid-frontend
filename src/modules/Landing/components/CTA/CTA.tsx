@@ -6,7 +6,7 @@ import clsx from "clsx";
 import Container from "../../../../shared/ui/Container";
 import Reveal from "../shared/Reveal";
 import CtaButton from "../shared/CtaButton";
-import { roleOptions, regionOptions } from "../../constants/landing.constants";
+import { useT } from "../../../../shared/i18n/context";
 
 interface FormState {
   name: string;
@@ -21,6 +21,7 @@ type Touched = Partial<Record<FieldKey, boolean>>;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function CTA() {
+  const t = useT();
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
@@ -33,13 +34,12 @@ export default function CTA() {
 
   const errors = useMemo(() => {
     const e: Partial<Record<FieldKey, string>> = {};
-    if (form.name.trim().length < 2) e.name = "Please enter your full name.";
-    if (!EMAIL_RE.test(form.email.trim()))
-      e.email = "Please enter a valid email address.";
-    if (form.role <= 0) e.role = "Please select your role.";
-    if (form.region <= 0) e.region = "Please select your region.";
+    if (form.name.trim().length < 2) e.name = t.cta.errors.name;
+    if (!EMAIL_RE.test(form.email.trim())) e.email = t.cta.errors.email;
+    if (form.role <= 0) e.role = t.cta.errors.role;
+    if (form.region <= 0) e.region = t.cta.errors.region;
     return e;
-  }, [form]);
+  }, [form, t]);
 
   const show = (k: FieldKey) => (touched[k] || submitted) && errors[k];
 
@@ -66,29 +66,20 @@ export default function CTA() {
         <div className="mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-2">
           <Reveal>
             <span className="mb-3 inline-block rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-700">
-              Get started
+              {t.cta.eyebrow}
             </span>
             <h2 className="font-headline text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Start building your verifiable credit today
+              {t.cta.title}
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-gray-600">
-              Join AgriAid to document your activity, certify your stock and open
-              the door to financing. Tell us a little about you and we'll be in
-              touch.
+              {t.cta.subtitle}
             </p>
             <ul className="mt-6 space-y-2 text-sm text-gray-600">
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600" /> No cost to
-                join
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600" /> No credit
-                card required
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600" /> Your data
-                stays yours
-              </li>
+              {t.cta.benefits.map((benefit) => (
+                <li key={benefit} className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" /> {benefit}
+                </li>
+              ))}
             </ul>
           </Reveal>
 
@@ -98,18 +89,18 @@ export default function CTA() {
                 <div className="flex flex-col items-center py-10 text-center">
                   <CheckCircle2 className="h-14 w-14 text-emerald-600" />
                   <h3 className="mt-4 font-headline text-2xl font-extrabold text-gray-900">
-                    You're on the list!
+                    {t.cta.successTitle}
                   </h3>
                   <p className="mt-2 max-w-sm text-sm text-gray-600">
-                    Thanks, {form.name.split(" ")[0]}. We'll reach out with next
-                    steps to get your cooperative onboarded to AgriAid.
+                    {t.cta.successGreeting}, {form.name.split(" ")[0]}.{" "}
+                    {t.cta.successRest}
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} noValidate className="space-y-4">
                   <div>
                     <label className="mb-1.5 block text-sm font-semibold text-gray-700">
-                      Full name
+                      {t.cta.fullName}
                     </label>
                     <input
                       type="text"
@@ -118,7 +109,7 @@ export default function CTA() {
                         setForm({ ...form, name: e.target.value })
                       }
                       onBlur={() => setTouched({ ...touched, name: true })}
-                      placeholder="e.g. Amina Njoya"
+                      placeholder={t.cta.fullNamePlaceholder}
                       className={fieldClass("name")}
                     />
                     {show("name") && (
@@ -128,7 +119,7 @@ export default function CTA() {
 
                   <div>
                     <label className="mb-1.5 block text-sm font-semibold text-gray-700">
-                      Email address
+                      {t.cta.email}
                     </label>
                     <input
                       type="email"
@@ -137,7 +128,7 @@ export default function CTA() {
                         setForm({ ...form, email: e.target.value })
                       }
                       onBlur={() => setTouched({ ...touched, email: true })}
-                      placeholder="you@example.com"
+                      placeholder={t.cta.emailPlaceholder}
                       className={fieldClass("email")}
                     />
                     {show("email") && (
@@ -148,7 +139,7 @@ export default function CTA() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
                       <label className="mb-1.5 block text-sm font-semibold text-gray-700">
-                        Role
+                        {t.cta.role}
                       </label>
                       <select
                         value={form.role}
@@ -158,10 +149,10 @@ export default function CTA() {
                         onBlur={() => setTouched({ ...touched, role: true })}
                         className={fieldClass("role")}
                       >
-                        <option value={0}>Select role</option>
-                        {roleOptions.map((o) => (
-                          <option key={o.value} value={o.value}>
-                            {o.label}
+                        <option value={0}>{t.cta.selectRole}</option>
+                        {t.cta.roleOptions.map((label, i) => (
+                          <option key={label} value={i + 1}>
+                            {label}
                           </option>
                         ))}
                       </select>
@@ -174,7 +165,7 @@ export default function CTA() {
 
                     <div>
                       <label className="mb-1.5 block text-sm font-semibold text-gray-700">
-                        Region
+                        {t.cta.region}
                       </label>
                       <select
                         value={form.region}
@@ -184,10 +175,10 @@ export default function CTA() {
                         onBlur={() => setTouched({ ...touched, region: true })}
                         className={fieldClass("region")}
                       >
-                        <option value={0}>Select region</option>
-                        {regionOptions.map((o) => (
-                          <option key={o.value} value={o.value}>
-                            {o.label}
+                        <option value={0}>{t.cta.selectRegion}</option>
+                        {t.cta.regionOptions.map((label, i) => (
+                          <option key={label} value={i + 1}>
+                            {label}
                           </option>
                         ))}
                       </select>
@@ -200,12 +191,12 @@ export default function CTA() {
                   </div>
 
                   <CtaButton type="submit" size="lg" fullWidth>
-                    Get started free
+                    {t.cta.submit}
                     <ArrowRight className="h-5 w-5" />
                   </CtaButton>
 
                   <p className="text-center text-xs text-gray-400">
-                    We respect your privacy. No spam, just onboarding help.
+                    {t.cta.privacy}
                   </p>
                 </form>
               )}

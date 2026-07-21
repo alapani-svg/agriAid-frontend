@@ -1,21 +1,23 @@
 import Container from "../../../../shared/ui/Container";
 import Reveal from "../shared/Reveal";
 import SectionHeading from "../shared/SectionHeading";
-import { features } from "../../constants/landing.constants";
+import { useT } from "../../../../shared/i18n/context";
+import { featureIcons } from "../../constants/landing.constants";
 
 export default function Features() {
+  const t = useT();
   return (
     <section id="features" className="bg-white py-24">
       <Container>
         <SectionHeading
-          eyebrow="Features"
-          title="Everything a producer needs in one place"
-          subtitle="From documenting daily activity to unlocking long-term financing, built to be simple, verifiable and useful offline."
+          eyebrow={t.features.eyebrow}
+          title={t.features.title}
+          subtitle={t.features.subtitle}
         />
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature, i) => {
-            const Icon = feature.icon;
+          {t.features.items.map((feature, i) => {
+            const Icon = featureIcons[i];
             return (
               <Reveal key={feature.title} delay={(i % 3) * 0.08}>
                 <div className="group h-full rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg">

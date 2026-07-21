@@ -1,21 +1,23 @@
 import Container from "../../../../shared/ui/Container";
 import Reveal from "../shared/Reveal";
 import SectionHeading from "../shared/SectionHeading";
-import { techItems, techLabels } from "../../constants/landing.constants";
+import { useT } from "../../../../shared/i18n/context";
+import { techIcons, techLabels } from "../../constants/landing.constants";
 
 export default function Technology() {
+  const t = useT();
   return (
     <section id="technology" className="bg-white py-24">
       <Container>
         <SectionHeading
-          eyebrow="Technology & access"
-          title="Trustworthy, secure and built for the field"
-          subtitle="AgriAid is engineered so records can be trusted, data stays protected, and the platform works wherever farmers do."
+          eyebrow={t.tech.eyebrow}
+          title={t.tech.title}
+          subtitle={t.tech.subtitle}
         />
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {techItems.map((item, i) => {
-            const Icon = item.icon;
+          {t.tech.items.map((item, i) => {
+            const Icon = techIcons[i];
             return (
               <Reveal key={item.title} delay={(i % 4) * 0.08}>
                 <div className="h-full rounded-2xl border border-emerald-100 bg-[#f0f7f0] p-6">
@@ -35,7 +37,7 @@ export default function Technology() {
         </div>
 
         <Reveal className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <span className="text-sm text-gray-500">Built on</span>
+          <span className="text-sm text-gray-500">{t.tech.builtOn}</span>
           {techLabels.map((label) => (
             <span
               key={label}

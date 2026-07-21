@@ -3,9 +3,11 @@ import { ArrowRight, PlayCircle, BadgeCheck, Warehouse, QrCode } from "lucide-re
 
 import Container from "../../../../shared/ui/Container";
 import CtaButton from "../shared/CtaButton";
+import { useT } from "../../../../shared/i18n/context";
 import { scrollToId } from "../../utils/scroll";
 
 function ScoreVisual() {
+  const t = useT();
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -20,12 +22,12 @@ function ScoreVisual() {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
-              Credibility score
+              {t.hero.scoreEyebrow}
             </p>
-            <p className="mt-1 text-sm text-gray-600">Cooperative overview</p>
+            <p className="mt-1 text-sm text-gray-600">{t.hero.scoreOverview}</p>
           </div>
           <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">
-            <BadgeCheck className="h-3.5 w-3.5" /> High tier
+            <BadgeCheck className="h-3.5 w-3.5" /> {t.hero.highTier}
           </span>
         </div>
 
@@ -62,15 +64,15 @@ function ScoreVisual() {
 
           <div className="space-y-3">
             <div>
-              <p className="text-xs text-gray-500">Maximum eligible term</p>
+              <p className="text-xs text-gray-500">{t.hero.maxTerm}</p>
               <p className="font-headline text-2xl font-extrabold text-gray-900">
-                20 yrs
+                {t.hero.years}
               </p>
             </div>
             <div>
-              <p className="text-xs text-gray-500">Repayment history</p>
+              <p className="text-xs text-gray-500">{t.hero.repayment}</p>
               <p className="text-sm font-semibold text-emerald-700">
-                On-time, 12 / 12
+                {t.hero.onTime}
               </p>
             </div>
           </div>
@@ -82,9 +84,9 @@ function ScoreVisual() {
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-gray-900">
-              Certified maize warehouse receipt
+              {t.hero.receiptTitle}
             </p>
-            <p className="text-xs text-emerald-700">Active collateral</p>
+            <p className="text-xs text-emerald-700">{t.hero.activeCollateral}</p>
           </div>
           <QrCode className="h-8 w-8 text-gray-400" />
         </div>
@@ -94,6 +96,7 @@ function ScoreVisual() {
 }
 
 export default function Hero() {
+  const t = useT();
   return (
     <section
       id="top"
@@ -108,18 +111,16 @@ export default function Hero() {
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/70 px-3 py-1 text-xs font-semibold text-emerald-700">
               <span className="h-2 w-2 rounded-full bg-emerald-500" />
-              Built for Cameroon's producers
+              {t.hero.badge}
             </span>
 
             <h1 className="mt-5 font-headline text-4xl font-extrabold leading-[1.08] tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-              Turn everyday farm activity into{" "}
-              <span className="text-emerald-600">verifiable credit</span>
+              {t.hero.headlinePre}
+              <span className="text-emerald-600">{t.hero.headlineHighlight}</span>
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-gray-600">
-              AgriAid documents your harvests and stock, certifies warehouse
-              deposits, and builds an objective activity history, so producers
-              can unlock financing of up to 20 years.
+              {t.hero.subtitle}
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -127,7 +128,7 @@ export default function Hero() {
                 size="lg"
                 onClick={() => scrollToId("get-started")}
               >
-                Get started free
+                {t.actions.getStartedFree}
                 <ArrowRight className="h-5 w-5" />
               </CtaButton>
               <CtaButton
@@ -136,14 +137,11 @@ export default function Hero() {
                 onClick={() => scrollToId("workflow")}
               >
                 <PlayCircle className="h-5 w-5" />
-                See how it works
+                {t.actions.seeHow}
               </CtaButton>
             </div>
 
-            <p className="mt-5 text-sm text-gray-500">
-              No cost to join, works on low-bandwidth connections, and your
-              data stays yours
-            </p>
+            <p className="mt-5 text-sm text-gray-500">{t.hero.microcopy}</p>
           </motion.div>
 
           <ScoreVisual />

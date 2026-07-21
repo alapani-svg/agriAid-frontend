@@ -2,23 +2,14 @@ import { Link } from "react-scroll";
 
 import Container from "../../../../shared/ui/Container";
 import LogoBadge from "../shared/LogoBadge";
+import { useT } from "../../../../shared/i18n/context";
 import { NAV_OFFSET } from "../../utils/scroll";
 
-const platformLinks = [
-  { name: "Platform", to: "platform" },
-  { name: "Features", to: "features" },
-  { name: "How it works", to: "workflow" },
-  { name: "Credibility score", to: "credibility" },
-];
-
-const roleLinks = [
-  { name: "Farmers & CIGs", to: "roles" },
-  { name: "Financing institutions", to: "roles" },
-  { name: "Warehouse managers", to: "roles" },
-  { name: "Buyers & traders", to: "roles" },
-];
+const platformTargets = ["platform", "features", "workflow", "credibility"];
+const audienceTargets = ["roles", "roles", "roles", "roles"];
 
 export default function Footer() {
+  const t = useT();
   const year = new Date().getFullYear();
 
   return (
@@ -31,25 +22,25 @@ export default function Footer() {
               wordmarkClassName="text-xl text-white"
             />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-emerald-100/70">
-              AgriAid turns everyday farm activity into verifiable credit,
-              documenting harvests, certifying stock and connecting Cameroon's
-              producers to financing.
+              {t.footer.tagline}
             </p>
           </div>
 
           <div>
-            <h4 className="text-sm font-bold text-white">Platform</h4>
+            <h4 className="text-sm font-bold text-white">
+              {t.footer.platformTitle}
+            </h4>
             <ul className="mt-4 space-y-2 text-sm">
-              {platformLinks.map((l) => (
-                <li key={l.name}>
+              {t.footer.platformLinks.map((name, i) => (
+                <li key={name}>
                   <Link
-                    to={l.to}
+                    to={platformTargets[i]}
                     smooth
                     duration={600}
                     offset={NAV_OFFSET}
                     className="cursor-pointer text-emerald-100/70 transition hover:text-white"
                   >
-                    {l.name}
+                    {name}
                   </Link>
                 </li>
               ))}
@@ -57,18 +48,20 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-bold text-white">Who it's for</h4>
+            <h4 className="text-sm font-bold text-white">
+              {t.footer.audienceTitle}
+            </h4>
             <ul className="mt-4 space-y-2 text-sm">
-              {roleLinks.map((l) => (
-                <li key={l.name}>
+              {t.footer.audienceLinks.map((name, i) => (
+                <li key={name}>
                   <Link
-                    to={l.to}
+                    to={audienceTargets[i]}
                     smooth
                     duration={600}
                     offset={NAV_OFFSET}
                     className="cursor-pointer text-emerald-100/70 transition hover:text-white"
                   >
-                    {l.name}
+                    {name}
                   </Link>
                 </li>
               ))}
@@ -78,17 +71,17 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row">
           <p className="text-xs text-emerald-100/60">
-            © {year} AgriAid. All rights reserved.
+            © {year} AgriAid. {t.footer.rights}
           </p>
           <div className="flex gap-6 text-xs">
             <a href="#" className="text-emerald-100/70 transition hover:text-white">
-              Privacy Policy
+              {t.footer.privacy}
             </a>
             <a href="#" className="text-emerald-100/70 transition hover:text-white">
-              Terms of Service
+              {t.footer.terms}
             </a>
             <a href="#" className="text-emerald-100/70 transition hover:text-white">
-            Alapani Corantin & Tsehoule Ngalock
+              Alapani Corantin & Tsehoule Ngalock
             </a>
           </div>
         </div>

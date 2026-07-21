@@ -1,9 +1,11 @@
 import Container from "../../../../shared/ui/Container";
 import Reveal from "../shared/Reveal";
 import SectionHeading from "../shared/SectionHeading";
-import { steps } from "../../constants/landing.constants";
+import { useT } from "../../../../shared/i18n/context";
+import { stepIcons } from "../../constants/landing.constants";
 
 export default function HowItWorks() {
+  const t = useT();
   return (
     <section
       id="workflow"
@@ -11,14 +13,14 @@ export default function HowItWorks() {
     >
       <Container>
         <SectionHeading
-          eyebrow="How it works"
-          title="From daily activity to a loan in four steps"
-          subtitle="A simple, repeatable cycle that compounds into credibility and access to financing."
+          eyebrow={t.how.eyebrow}
+          title={t.how.title}
+          subtitle={t.how.subtitle}
         />
 
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step, i) => {
-            const Icon = step.icon;
+          {t.how.items.map((step, i) => {
+            const Icon = stepIcons[i];
             return (
               <Reveal key={step.title} delay={i * 0.08}>
                 <div className="relative h-full rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm">

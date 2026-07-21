@@ -1,21 +1,23 @@
 import Container from "../../../../shared/ui/Container";
 import Reveal from "../shared/Reveal";
 import SectionHeading from "../shared/SectionHeading";
-import { roles } from "../../constants/landing.constants";
+import { useT } from "../../../../shared/i18n/context";
+import { roleIcons } from "../../constants/landing.constants";
 
 export default function Roles() {
+  const t = useT();
   return (
     <section id="roles" className="bg-[#f0f7f0] py-24">
       <Container>
         <SectionHeading
-          eyebrow="Who it's for"
-          title="One ecosystem, every role connected"
-          subtitle="AgriAid gives each participant the tools they need, and a shared, trusted record between them."
+          eyebrow={t.roles.eyebrow}
+          title={t.roles.title}
+          subtitle={t.roles.subtitle}
         />
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {roles.map((role, i) => {
-            const Icon = role.icon;
+          {t.roles.items.map((role, i) => {
+            const Icon = roleIcons[i];
             return (
               <Reveal key={role.name} delay={(i % 3) * 0.08}>
                 <div className="flex h-full items-start gap-4 rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">

@@ -7,10 +7,13 @@ import clsx from "clsx";
 import LogoBadge from "../shared/LogoBadge";
 import CtaButton from "../shared/CtaButton";
 import Container from "../../../../shared/ui/Container";
-import { navigation } from "../../constants/landing.constants";
+import LanguageSwitcher from "../../../../shared/ui/LanguageSwitcher";
+import { useT } from "../../../../shared/i18n/context";
+import { navTargets } from "../../constants/landing.constants";
 import { scrollToId, NAV_OFFSET } from "../../utils/scroll";
 
 export default function Navigation() {
+  const t = useT();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -25,6 +28,8 @@ export default function Navigation() {
     setOpen(false);
     scrollToId(id);
   };
+
+  const items = navTargets.map((to, i) => ({ to, name: t.nav[i] }));
 
   return (
     <motion.header
@@ -52,9 +57,9 @@ export default function Navigation() {
           </button>
 
           <div className="hidden items-center gap-8 lg:flex">
-            {navigation.map((item) => (
+            {items.map((item) => (
               <Link
-                key={item.name}
+                key={item.to}
                 to={item.to}
                 spy
                 smooth
@@ -69,29 +74,33 @@ export default function Navigation() {
           </div>
 
           <div className="hidden items-center gap-3 lg:flex">
+            <LanguageSwitcher />
             <CtaButton variant="outline" onClick={() => go("get-started")}>
-              Sign In
+              {t.actions.signIn}
             </CtaButton>
             <CtaButton variant="primary" onClick={() => go("get-started")}>
-              Get Started
+              {t.actions.getStarted}
             </CtaButton>
           </div>
 
-          <button
-            className="text-gray-800 lg:hidden"
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <X /> : <Menu />}
-          </button>
+          <div className="flex items-center gap-3 lg:hidden">
+            <LanguageSwitcher />
+            <button
+              className="text-gray-800"
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <X /> : <Menu />}
+            </button>
+          </div>
         </nav>
 
         {open && (
           <div className="mt-2 space-y-1 rounded-2xl border border-emerald-100 bg-white p-4 shadow-xl lg:hidden">
-            {navigation.map((item) => (
+            {items.map((item) => (
               <button
-                key={item.name}
+                key={item.to}
                 onClick={() => go(item.to)}
                 className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-gray-700 transition hover:bg-emerald-50 hover:text-emerald-700"
               >
@@ -100,10 +109,10 @@ export default function Navigation() {
             ))}
             <div className="grid gap-2 pt-2">
               <CtaButton fullWidth variant="outline" onClick={() => go("get-started")}>
-                Sign In
+                {t.actions.signIn}
               </CtaButton>
               <CtaButton fullWidth variant="primary" onClick={() => go("get-started")}>
-                Get Started
+                {t.actions.getStarted}
               </CtaButton>
             </div>
           </div>

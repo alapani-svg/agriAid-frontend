@@ -1,5 +1,10 @@
-import LandingPage from "./features/landing/pages/LandingPage";
+import LandingPage from "./modules/Landing/pages/LandingPage";
+import MainLayout from "./layouts/MainLayout";
 
 export default function App() {
-  return <LandingPage />;
+  return (
+    <MainLayout>
+      <LandingPage />
+    </MainLayout>
+  );
 }

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import Navigation from "../features/landing/sections/Navigation";
+import Navigation from "../modules/Landing/components/Navigation/Navigation";
 
 interface Props {
   children: ReactNode;
@@ -9,14 +9,9 @@ export default function MainLayout({
   children,
 }: Props) {
   return (
-    <div className="min-h-screen bg-slate-50">
-
+    <div className="min-h-screen bg-[#f6f7f9] text-slate-950 antialiased">
       <Navigation />
-
-      <main>
-        {children}
-      </main>
-
+      <main className="pt-28">{children}</main>
     </div>
   );
 }

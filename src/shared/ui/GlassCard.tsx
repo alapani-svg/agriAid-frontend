@@ -13,10 +13,10 @@ export default function GlassCard({
   return (
     <div
       className={clsx(
-        "rounded-3xl border border-white/20",
-        "bg-white/10",
+        "rounded-3xl border border-white/40",
+        "bg-white/30",
         "backdrop-blur-xl",
-        "shadow-xl",
+        "shadow-[0_35px_90px_rgba(15,23,42,0.16)]",
         "p-6",
         "text-slate-900",
         className

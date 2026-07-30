@@ -1,6 +1,6 @@
-# AgriAid Frontend
+# agriAid Frontend
 
-React + TypeScript frontend for AgriAid, providing responsive dashboards and user interfaces for farmers, warehouse managers, commodity buyers, institutional underwriters, and system administrators using a modern modular architecture.
+React + TypeScript frontend for agriAid, providing responsive dashboards and user interfaces for farmers, warehouse managers, commodity buyers, institutional underwriters, and system administrators using a modern modular architecture.
 
 ## Technology Stack
 
@@ -17,7 +17,7 @@ React + TypeScript frontend for AgriAid, providing responsive dashboards and use
 
 - React + TypeScript
 - Tailwind CSS
-- AgriAid branding
+- agriAid branding
 - Frontend DDD architecture
 - Modular folder structure
 

@@ -1,13 +1,22 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../../shared/ui/Button";
 import TextField from "../../../../shared/ui/TextField";
 import { persistPendingUser, registerUser } from "../../api/authApi";
+import {
+  REGION_OPTIONS,
+  ROLE_OPTIONS,
+  type PlatformRole,
+} from "../../constants/signup";
 
 interface RegisterFormData {
   name: string;
   email: string;
   phone: string;
+  role: PlatformRole | "";
+  region: string;
+  organization: string;
+  access_code: string;
   password: string;
   password_confirmation: string;
 }
@@ -18,23 +27,43 @@ export default function Register() {
     name: "",
     email: "",
     phone: "",
+    role: "",
+    region: "",
+    organization: "",
+    access_code: "",
     password: "",
     password_confirmation: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const selectedRole = useMemo(
+    () => ROLE_OPTIONS.find((r) => r.value === formData.role),
+    [formData.role],
+  );
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
+    if (!formData.role) {
+      setError("Please select your role on the platform.");
+      return;
+    }
+    if (!formData.region) {
+      setError("Please select your region.");
+      return;
+    }
     if (formData.password !== formData.password_confirmation) {
       setError("Passwords do not match");
       return;
     }
-
     if (formData.password.length < 8) {
       setError("Password must be at least 8 characters");
+      return;
+    }
+    if (selectedRole?.needsCode && !formData.access_code.trim()) {
+      setError("This role requires an organisation access code.");
       return;
     }
 
@@ -45,6 +74,10 @@ export default function Register() {
         name: formData.name.trim(),
         email: formData.email.trim(),
         phone: formData.phone.trim() || undefined,
+        role: formData.role as PlatformRole,
+        region: formData.region,
+        organization: formData.organization.trim() || undefined,
+        access_code: formData.access_code.trim() || undefined,
         password: formData.password,
         password_confirmation: formData.password_confirmation,
       });
@@ -58,7 +91,9 @@ export default function Register() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -67,7 +102,7 @@ export default function Register() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-teal-50 px-4 py-12">
-      <div className="w-full max-w-md rounded-2xl border border-emerald-100 bg-white/90 p-8 shadow-lg backdrop-blur">
+      <div className="w-full max-w-lg rounded-2xl border border-emerald-100 bg-white/90 p-8 shadow-lg backdrop-blur">
         <div className="mb-8 text-center">
           <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600">
             agriAid
@@ -76,7 +111,7 @@ export default function Register() {
             Create your account
           </h1>
           <p className="mt-2 text-gray-600">
-            Sign up to access your agricultural financing dashboard
+            Choose your role and region so we open the right workspace for you.
           </p>
         </div>
 
@@ -94,7 +129,7 @@ export default function Register() {
             type="text"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Jane Cooperative"
+            placeholder="e.g. Amina Njoya"
             required
             autoComplete="name"
           />
@@ -121,6 +156,84 @@ export default function Register() {
             placeholder="+237 6XX XXX XXX"
             autoComplete="tel"
           />
+
+          <div className="w-full">
+            <label
+              htmlFor="role"
+              className="mb-1 block text-sm font-medium text-slate-700"
+            >
+              Role on agriAid
+            </label>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              required
+              className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-900 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            >
+              <option value="">Select role</option>
+              {ROLE_OPTIONS.map((r) => (
+                <option key={r.value} value={r.value}>
+                  {r.label}
+                  {r.needsCode ? " (access code required)" : ""}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="w-full">
+            <label
+              htmlFor="region"
+              className="mb-1 block text-sm font-medium text-slate-700"
+            >
+              Region (Cameroon)
+            </label>
+            <select
+              id="region"
+              name="region"
+              value={formData.region}
+              onChange={handleChange}
+              required
+              className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-900 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            >
+              <option value="">Select region</option>
+              {REGION_OPTIONS.map((region) => (
+                <option key={region} value={region}>
+                  {region}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <TextField
+            label="Organisation / cooperative (optional)"
+            id="organization"
+            name="organization"
+            type="text"
+            value={formData.organization}
+            onChange={handleChange}
+            placeholder="e.g. COOP-NORD Maize"
+          />
+
+          {selectedRole?.needsCode && (
+            <div>
+              <TextField
+                label="Organisation access code"
+                id="access_code"
+                name="access_code"
+                type="text"
+                value={formData.access_code}
+                onChange={handleChange}
+                placeholder="Code from your institution"
+                required
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                Lenders, warehouses and government accounts need a code from
+                agriAid or your organisation.
+              </p>
+            </div>
+          )}
 
           <TextField
             label="Password"

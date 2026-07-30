@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../shared/ui/Button";
 import { clearSession, logoutUser, type AuthUser } from "../api/authApi";
+import { ROLE_OPTIONS } from "../constants/signup";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -38,6 +39,9 @@ export default function Dashboard() {
     );
   }
 
+  const roleLabel =
+    ROLE_OPTIONS.find((r) => r.value === user.role)?.label ?? user.role ?? "Member";
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
       <header className="border-b border-emerald-100 bg-white/80 backdrop-blur">
@@ -62,10 +66,44 @@ export default function Dashboard() {
             Welcome, {user.name}
           </h2>
           <p className="mt-2 text-gray-600">{user.email}</p>
+
+          <dl className="mt-6 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-xl bg-emerald-50 px-4 py-3">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                Role
+              </dt>
+              <dd className="mt-1 font-medium text-gray-900">{roleLabel}</dd>
+            </div>
+            <div className="rounded-xl bg-emerald-50 px-4 py-3">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                Region
+              </dt>
+              <dd className="mt-1 font-medium text-gray-900">
+                {user.region || "—"}
+              </dd>
+            </div>
+            <div className="rounded-xl bg-emerald-50 px-4 py-3">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                Status
+              </dt>
+              <dd className="mt-1 font-medium capitalize text-gray-900">
+                {user.status || "active"}
+              </dd>
+            </div>
+            <div className="rounded-xl bg-emerald-50 px-4 py-3">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                Organisation
+              </dt>
+              <dd className="mt-1 font-medium text-gray-900">
+                {user.organization || "—"}
+              </dd>
+            </div>
+          </dl>
+
           <p className="mt-6 text-sm leading-relaxed text-gray-500">
-            You are signed in. This is your local agriAid dashboard. Farm
-            activity, warehouse receipts and financing modules can plug in here
-            next.
+            Your workspace is scoped to your role. Farmers document activity;
+            warehouses certify stock; lenders review scores; buyers trade;
+            government sees regional reporting.
           </p>
         </div>
       </main>

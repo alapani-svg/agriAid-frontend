@@ -1,9 +1,16 @@
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+import type { PlatformRole } from "../constants/signup";
+
+const API_BASE = (import.meta.env.VITE_API_URL ?? "http://localhost:8000").replace(/\/$/, "");
 
 export type AuthUser = {
   id: string;
   name: string;
   email: string;
+  phone?: string | null;
+  role?: string;
+  region?: string | null;
+  organization?: string | null;
+  status?: string;
 };
 
 type ApiErrorBody = {
@@ -28,51 +35,59 @@ function formatError(data: ApiErrorBody, fallback: string): string {
   return data.error || data.message || fallback;
 }
 
+function networkError(err: unknown): Error {
+  if (err instanceof TypeError) {
+    return new Error(
+      "Cannot reach the API. Start the backend with: php artisan serve (http://localhost:8000), then try again.",
+    );
+  }
+  if (err instanceof Error) return err;
+  return new Error("Request failed");
+}
+
+async function postJson<T>(path: string, body: unknown, token?: string | null): Promise<T> {
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      credentials: "include",
+      body: JSON.stringify(body),
+    });
+  } catch (err) {
+    throw networkError(err);
+  }
+
+  const data = await parseJson(res);
+  if (!res.ok) {
+    throw new Error(formatError(data, `Request failed (${res.status})`));
+  }
+  return data as T;
+}
+
 export async function registerUser(payload: {
   name: string;
   email: string;
   password: string;
   password_confirmation: string;
   phone?: string;
+  role: PlatformRole;
+  region: string;
+  organization?: string;
+  access_code?: string;
 }): Promise<{ user: AuthUser; message: string }> {
-  const res = await fetch(`${API_BASE}/api/auth/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(payload),
-  });
-
-  const data = await parseJson(res);
-  if (!res.ok) {
-    throw new Error(formatError(data, "Registration failed"));
-  }
-
-  return data as { user: AuthUser; message: string };
+  return postJson("/api/auth/register", payload);
 }
 
 export async function loginUser(payload: {
   email: string;
   password: string;
 }): Promise<{ user: AuthUser; message: string }> {
-  const res = await fetch(`${API_BASE}/api/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(payload),
-  });
-
-  const data = await parseJson(res);
-  if (!res.ok) {
-    throw new Error(formatError(data, "Login failed"));
-  }
-
-  return data as { user: AuthUser; message: string };
+  return postJson("/api/auth/login", payload);
 }
 
 export async function verifyOtp(payload: {
@@ -80,63 +95,20 @@ export async function verifyOtp(payload: {
   code: string;
   purpose?: string;
 }): Promise<{ token: string; user: AuthUser; message: string }> {
-  const res = await fetch(`${API_BASE}/api/otp/verify`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({
-      purpose: "login",
-      ...payload,
-    }),
-  });
-
-  const data = await parseJson(res);
-  if (!res.ok) {
-    throw new Error(formatError(data, "Verification failed"));
-  }
-
-  return data as { token: string; user: AuthUser; message: string };
+  return postJson("/api/otp/verify", { purpose: "login", ...payload });
 }
 
 export async function resendOtp(payload: {
   user_id: string;
   purpose?: string;
 }): Promise<{ message: string }> {
-  const res = await fetch(`${API_BASE}/api/otp/generate`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({
-      purpose: "login",
-      ...payload,
-    }),
-  });
-
-  const data = await parseJson(res);
-  if (!res.ok) {
-    throw new Error(formatError(data, "Failed to resend OTP"));
-  }
-
-  return data as { message: string };
+  return postJson("/api/otp/generate", { purpose: "login", ...payload });
 }
 
 export async function logoutUser(): Promise<void> {
   const token = localStorage.getItem("auth_token");
   try {
-    await fetch(`${API_BASE}/api/auth/logout`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-      credentials: "include",
-    });
+    await postJson("/api/auth/logout", {}, token);
   } catch {
     // ignore
   }

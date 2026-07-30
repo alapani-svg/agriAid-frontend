@@ -126,7 +126,7 @@ const en: Dictionary = {
     headlinePre: "Turn everyday farm activity into ",
     headlineHighlight: "verifiable credit",
     subtitle:
-      "AgriAid documents your harvests and stock, certifies warehouse deposits, and builds an objective activity history, so producers can unlock financing of up to 20 years.",
+      "agriAid documents your harvests and stock, certifies warehouse deposits, and builds an objective activity history, so producers can unlock financing of up to 20 years.",
     microcopy:
       "No cost to join, works on low-bandwidth connections, and your data stays yours",
     scoreEyebrow: "Credibility score",
@@ -170,7 +170,7 @@ const en: Dictionary = {
     solutionEyebrow: "The solution",
     solutionTitle: "One platform that makes value verifiable",
     solutionSubtitle:
-      "AgriAid connects documentation, certified storage and scoring so producers earn credibility that institutions can trust.",
+      "agriAid connects documentation, certified storage and scoring so producers earn credibility that institutions can trust.",
     pillars: [
       {
         title: "Continuous documentation",
@@ -246,7 +246,7 @@ const en: Dictionary = {
     eyebrow: "Who it's for",
     title: "One ecosystem, every role connected",
     subtitle:
-      "AgriAid gives each participant the tools they need, and a shared, trusted record between them.",
+      "agriAid gives each participant the tools they need, and a shared, trusted record between them.",
     items: [
       {
         name: "Farmers & CIGs",
@@ -306,13 +306,13 @@ const en: Dictionary = {
       "of smallholders access formal agricultural credit",
     ],
     source:
-      "Indicative figures drawn from national and development-agency estimates; used to illustrate the financing gap AgriAid addresses.",
+      "Indicative figures drawn from national and development-agency estimates; used to illustrate the financing gap agriAid addresses.",
   },
   tech: {
     eyebrow: "Technology & access",
     title: "Trustworthy, secure and built for the field",
     subtitle:
-      "AgriAid is engineered so records can be trusted, data stays protected, and the platform works wherever farmers do.",
+      "agriAid is engineered so records can be trusted, data stays protected, and the platform works wherever farmers do.",
     builtOn: "Built on",
     items: [
       {
@@ -337,7 +337,7 @@ const en: Dictionary = {
     eyebrow: "Get started",
     title: "Start building your verifiable credit today",
     subtitle:
-      "Join AgriAid to document your activity, certify your stock and open the door to financing. Tell us a little about you and we'll be in touch.",
+      "Join agriAid to document your activity, certify your stock and open the door to financing. Tell us a little about you and we'll be in touch.",
     benefits: [
       "No cost to join",
       "No credit card required",
@@ -375,7 +375,7 @@ const en: Dictionary = {
     successTitle: "You're on the list!",
     successGreeting: "Thanks",
     successRest:
-      "We'll reach out with next steps to get your cooperative onboarded to AgriAid.",
+      "We'll reach out with next steps to get your cooperative onboarded to agriAid.",
     errors: {
       name: "Please enter your full name.",
       email: "Please enter a valid email address.",
@@ -385,7 +385,7 @@ const en: Dictionary = {
   },
   footer: {
     tagline:
-      "AgriAid turns everyday farm activity into verifiable credit, documenting harvests, certifying stock and connecting Cameroon's producers to financing.",
+      "agriAid turns everyday farm activity into verifiable credit, documenting harvests, certifying stock and connecting Cameroon's producers to financing.",
     platformTitle: "Platform",
     platformLinks: ["Platform", "Features", "How it works", "Credibility score"],
     audienceTitle: "Who it's for",
@@ -414,7 +414,7 @@ const fr: Dictionary = {
     headlinePre: "Transformez l'activité agricole quotidienne en ",
     headlineHighlight: "crédit vérifiable",
     subtitle:
-      "AgriAid documente vos récoltes et vos stocks, certifie les dépôts en entrepôt et construit un historique d'activité objectif, afin que les producteurs puissent débloquer un financement allant jusqu'à 20 ans.",
+      "agriAid documente vos récoltes et vos stocks, certifie les dépôts en entrepôt et construit un historique d'activité objectif, afin que les producteurs puissent débloquer un financement allant jusqu'à 20 ans.",
     microcopy:
       "Adhésion gratuite, fonctionne sur les connexions à faible débit, et vos données restent les vôtres",
     scoreEyebrow: "Score de crédibilité",
@@ -459,7 +459,7 @@ const fr: Dictionary = {
     solutionEyebrow: "La solution",
     solutionTitle: "Une plateforme qui rend la valeur vérifiable",
     solutionSubtitle:
-      "AgriAid relie la documentation, le stockage certifié et le scoring afin que les producteurs gagnent une crédibilité digne de la confiance des institutions.",
+      "agriAid relie la documentation, le stockage certifié et le scoring afin que les producteurs gagnent une crédibilité digne de la confiance des institutions.",
     pillars: [
       {
         title: "Documentation continue",
@@ -535,7 +535,7 @@ const fr: Dictionary = {
     eyebrow: "Pour qui",
     title: "Un écosystème, chaque rôle connecté",
     subtitle:
-      "AgriAid donne à chaque participant les outils dont il a besoin, ainsi qu'un registre commun et fiable entre eux.",
+      "agriAid donne à chaque participant les outils dont il a besoin, ainsi qu'un registre commun et fiable entre eux.",
     items: [
       {
         name: "Agriculteurs et GIC",
@@ -595,13 +595,13 @@ const fr: Dictionary = {
       "des petits exploitants accèdent au crédit agricole formel",
     ],
     source:
-      "Chiffres indicatifs tirés d'estimations nationales et d'agences de développement ; utilisés pour illustrer le déficit de financement qu'AgriAid adresse.",
+      "Chiffres indicatifs tirés d'estimations nationales et d'agences de développement ; utilisés pour illustrer le déficit de financement qu'agriAid adresse.",
   },
   tech: {
     eyebrow: "Technologie et accès",
     title: "Fiable, sécurisé et conçu pour le terrain",
     subtitle:
-      "AgriAid est conçu pour que les registres soient dignes de confiance, que les données restent protégées et que la plateforme fonctionne partout où travaillent les agriculteurs.",
+      "agriAid est conçu pour que les registres soient dignes de confiance, que les données restent protégées et que la plateforme fonctionne partout où travaillent les agriculteurs.",
     builtOn: "Construit avec",
     items: [
       {
@@ -626,7 +626,7 @@ const fr: Dictionary = {
     eyebrow: "Commencer",
     title: "Commencez à bâtir votre crédit vérifiable dès aujourd'hui",
     subtitle:
-      "Rejoignez AgriAid pour documenter votre activité, certifier votre stock et ouvrir la porte au financement. Parlez-nous un peu de vous et nous vous recontacterons.",
+      "Rejoignez agriAid pour documenter votre activité, certifier votre stock et ouvrir la porte au financement. Parlez-nous un peu de vous et nous vous recontacterons.",
     benefits: [
       "Adhésion gratuite",
       "Aucune carte de crédit requise",
@@ -665,7 +665,7 @@ const fr: Dictionary = {
     successTitle: "Vous êtes sur la liste !",
     successGreeting: "Merci",
     successRest:
-      "Nous vous recontacterons avec les prochaines étapes pour intégrer votre coopérative à AgriAid.",
+      "Nous vous recontacterons avec les prochaines étapes pour intégrer votre coopérative à agriAid.",
     errors: {
       name: "Veuillez saisir votre nom complet.",
       email: "Veuillez saisir une adresse e-mail valide.",
@@ -675,7 +675,7 @@ const fr: Dictionary = {
   },
   footer: {
     tagline:
-      "AgriAid transforme l'activité agricole quotidienne en crédit vérifiable, en documentant les récoltes, en certifiant le stock et en reliant les producteurs du Cameroun au financement.",
+      "agriAid transforme l'activité agricole quotidienne en crédit vérifiable, en documentant les récoltes, en certifiant le stock et en reliant les producteurs du Cameroun au financement.",
     platformTitle: "Plateforme",
     platformLinks: [
       "Plateforme",

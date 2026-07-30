@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../shared/ui/Button";
-
-interface UserData {
-  id: string;
-  name: string;
-  email: string;
-}
+import { clearSession, logoutUser, type AuthUser } from "../api/authApi";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<UserData | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
@@ -22,31 +17,16 @@ export default function Dashboard() {
     }
 
     try {
-      setUser(JSON.parse(raw) as UserData);
+      setUser(JSON.parse(raw) as AuthUser);
     } catch {
+      clearSession();
       navigate("/login", { replace: true });
     }
   }, [navigate]);
 
   const handleLogout = async () => {
-    const token = localStorage.getItem("auth_token");
-    try {
-      await fetch("http://localhost:8000/api/auth/logout", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-        credentials: "include",
-      });
-    } catch {
-      // ignore network errors on logout
-    }
-
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("user_data");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("user_email");
+    await logoutUser();
+    clearSession();
     navigate("/login", { replace: true });
   };
 
@@ -83,9 +63,9 @@ export default function Dashboard() {
           </h2>
           <p className="mt-2 text-gray-600">{user.email}</p>
           <p className="mt-6 text-sm leading-relaxed text-gray-500">
-            You are signed in. This is your local agriAid dashboard shell.
-            Farm activity, warehouse receipts and financing modules can plug in
-            here next.
+            You are signed in. This is your local agriAid dashboard. Farm
+            activity, warehouse receipts and financing modules can plug in here
+            next.
           </p>
         </div>
       </main>

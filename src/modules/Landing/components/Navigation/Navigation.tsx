@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "react-scroll";
+import { Link as ScrollLink } from "react-scroll";
+import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 
 import LogoBadge from "../shared/LogoBadge";
@@ -14,6 +15,7 @@ import { scrollToId, NAV_OFFSET } from "../../utils/scroll";
 
 export default function Navigation() {
   const t = useT();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -58,7 +60,7 @@ export default function Navigation() {
 
           <div className="hidden items-center gap-8 lg:flex">
             {items.map((item) => (
-              <Link
+              <ScrollLink
                 key={item.to}
                 to={item.to}
                 spy
@@ -69,16 +71,28 @@ export default function Navigation() {
                 className="nav-link cursor-pointer text-sm font-semibold text-gray-700 transition hover:text-emerald-700"
               >
                 {item.name}
-              </Link>
+              </ScrollLink>
             ))}
           </div>
 
           <div className="hidden items-center gap-3 lg:flex">
             <LanguageSwitcher />
-            <CtaButton variant="outline" onClick={() => go("get-started")}>
+            <CtaButton
+              variant="outline"
+              onClick={() => {
+                setOpen(false);
+                navigate("/login");
+              }}
+            >
               {t.actions.signIn}
             </CtaButton>
-            <CtaButton variant="primary" onClick={() => go("get-started")}>
+            <CtaButton
+              variant="primary"
+              onClick={() => {
+                setOpen(false);
+                navigate("/register");
+              }}
+            >
               {t.actions.getStarted}
             </CtaButton>
           </div>
@@ -108,10 +122,24 @@ export default function Navigation() {
               </button>
             ))}
             <div className="grid gap-2 pt-2">
-              <CtaButton fullWidth variant="outline" onClick={() => go("get-started")}>
+              <CtaButton
+                fullWidth
+                variant="outline"
+                onClick={() => {
+                  setOpen(false);
+                  navigate("/login");
+                }}
+              >
                 {t.actions.signIn}
               </CtaButton>
-              <CtaButton fullWidth variant="primary" onClick={() => go("get-started")}>
+              <CtaButton
+                fullWidth
+                variant="primary"
+                onClick={() => {
+                  setOpen(false);
+                  navigate("/register");
+                }}
+              >
                 {t.actions.getStarted}
               </CtaButton>
             </div>

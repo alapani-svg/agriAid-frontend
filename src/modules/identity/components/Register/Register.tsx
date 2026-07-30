@@ -2,37 +2,57 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../../shared/ui/Button";
 import TextField from "../../../../shared/ui/TextField";
-import { loginUser, persistPendingUser } from "../../api/authApi";
+import { persistPendingUser, registerUser } from "../../api/authApi";
 
-interface LoginFormData {
+interface RegisterFormData {
+  name: string;
   email: string;
+  phone: string;
   password: string;
+  password_confirmation: string;
 }
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<LoginFormData>({
+  const [formData, setFormData] = useState<RegisterFormData>({
+    name: "",
     email: "",
+    phone: "",
     password: "",
+    password_confirmation: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
 
+    if (formData.password !== formData.password_confirmation) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const data = await loginUser({
+      const data = await registerUser({
+        name: formData.name.trim(),
         email: formData.email.trim(),
+        phone: formData.phone.trim() || undefined,
         password: formData.password,
+        password_confirmation: formData.password_confirmation,
       });
 
       persistPendingUser(data.user);
       navigate("/otp-verify");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      setError(err instanceof Error ? err.message : "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -53,10 +73,10 @@ export default function Login() {
             agriAid
           </p>
           <h1 className="mt-1 font-headline text-3xl font-bold text-gray-900">
-            Welcome back
+            Create your account
           </h1>
           <p className="mt-2 text-gray-600">
-            Sign in to access your agricultural financing dashboard
+            Sign up to access your agricultural financing dashboard
           </p>
         </div>
 
@@ -66,7 +86,19 @@ export default function Login() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <TextField
+            label="Full name"
+            id="name"
+            name="name"
+            type="text"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Jane Cooperative"
+            required
+            autoComplete="name"
+          />
+
           <TextField
             label="Email address"
             id="email"
@@ -80,29 +112,52 @@ export default function Login() {
           />
 
           <TextField
+            label="Phone (optional)"
+            id="phone"
+            name="phone"
+            type="tel"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="+237 6XX XXX XXX"
+            autoComplete="tel"
+          />
+
+          <TextField
             label="Password"
             id="password"
             name="password"
             type="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="••••••••"
+            placeholder="At least 8 characters"
             required
-            autoComplete="current-password"
+            autoComplete="new-password"
+          />
+
+          <TextField
+            label="Confirm password"
+            id="password_confirmation"
+            name="password_confirmation"
+            type="password"
+            value={formData.password_confirmation}
+            onChange={handleChange}
+            placeholder="Repeat password"
+            required
+            autoComplete="new-password"
           />
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Signing in…" : "Sign in"}
+            {loading ? "Creating account…" : "Sign up"}
           </Button>
         </form>
 
         <p className="mt-6 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
+          Already have an account?{" "}
           <Link
-            to="/register"
+            to="/login"
             className="font-semibold text-emerald-600 hover:text-emerald-700"
           >
-            Sign up
+            Sign in
           </Link>
         </p>
 

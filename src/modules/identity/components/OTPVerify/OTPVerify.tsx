@@ -1,194 +1,169 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Button from '../../../../shared/ui/Button';
-import TextField from '../../../../shared/ui/TextField';
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "../../../../shared/ui/Button";
+import TextField from "../../../../shared/ui/TextField";
+import { persistSession, resendOtp, verifyOtp } from "../../api/authApi";
 
 export default function OTPVerify() {
   const navigate = useNavigate();
-  const [otp, setOTP] = useState('');
+  const [otp, setOTP] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
   const [resending, setResending] = useState(false);
   const [countdown, setCountdown] = useState(60);
 
-  const userId = localStorage.getItem('user_id');
-  const userEmail = localStorage.getItem('user_email');
+  const userId = localStorage.getItem("user_id");
+  const userEmail = localStorage.getItem("user_email");
 
   useEffect(() => {
     if (!userId) {
-      navigate('/login');
-      return;
+      navigate("/login", { replace: true });
     }
-
-    // Countdown timer for resend
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
   }, [userId, navigate]);
+
+  useEffect(() => {
+    if (countdown <= 0) return;
+    const timer = setInterval(() => {
+      setCountdown((prev) => (prev <= 1 ? 0 : prev - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [countdown]);
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
+    setError("");
+    setInfo("");
 
     if (otp.length !== 6) {
-      setError('Please enter a 6-digit code');
-      setLoading(false);
+      setError("Please enter a 6-digit code");
       return;
     }
 
+    if (!userId) {
+      navigate("/login", { replace: true });
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const response = await fetch('http://localhost:8000/api/otp/verify', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          user_id: userId,
-          code: otp,
-          purpose: 'login',
-        }),
+      const data = await verifyOtp({
+        user_id: userId,
+        code: otp,
+        purpose: "login",
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Verification failed');
-      }
-
-      // Store token and user data
-      localStorage.setItem('auth_token', data.token);
-      localStorage.setItem('user_data', JSON.stringify(data.user));
-
-      // Navigate to dashboard
-      navigate('/dashboard');
+      persistSession(data.token, data.user);
+      navigate("/dashboard", { replace: true });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
     }
   };
 
   const handleResend = async () => {
-    if (countdown > 0 || resending) return;
+    if (countdown > 0 || resending || !userId) return;
 
     setResending(true);
-    setError('');
+    setError("");
+    setInfo("");
 
     try {
-      const response = await fetch('http://localhost:8000/api/otp/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          user_id: userId,
-          purpose: 'login',
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to resend OTP');
-      }
-
-      // Reset countdown
+      await resendOtp({ user_id: userId, purpose: "login" });
+      setInfo("A new code was sent to your email.");
       setCountdown(60);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to resend code');
+      setError(err instanceof Error ? err.message : "Failed to resend code");
     } finally {
       setResending(false);
     }
   };
 
   const handleOTPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+    const value = e.target.value.replace(/\D/g, "").slice(0, 6);
     setOTP(value);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-teal-50 px-4">
-      <div className="liquid-glass-emerald rounded-2xl p-8 w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 font-headline">
-            Verify Your Identity
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-teal-50 px-4 py-12">
+      <div className="w-full max-w-md rounded-2xl border border-emerald-100 bg-white/90 p-8 shadow-lg backdrop-blur">
+        <div className="mb-8 text-center">
+          <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600">
+            agriAid
+          </p>
+          <h1 className="mt-1 font-headline text-3xl font-bold text-gray-900">
+            Verify your identity
           </h1>
-          <p className="text-gray-600">
-            Enter the 6-digit code sent to {userEmail}
+          <p className="mt-2 text-gray-600">
+            Enter the 6-digit code sent to{" "}
+            <span className="font-medium text-gray-800">{userEmail}</span>
+          </p>
+          <p className="mt-1 text-xs text-gray-500">
+            Check your Mailtrap inbox while developing locally.
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+          <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
             {error}
+          </div>
+        )}
+
+        {info && (
+          <div className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
+            {info}
           </div>
         )}
 
         <form onSubmit={handleVerify} className="space-y-6">
           <TextField
-            label="Verification Code"
+            label="Verification code"
             id="otp"
             name="otp"
             type="text"
+            inputMode="numeric"
             value={otp}
             onChange={handleOTPChange}
             placeholder="123456"
             maxLength={6}
-            pattern="\d{6}"
             required
             className="text-center text-2xl tracking-widest"
+            autoComplete="one-time-code"
           />
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={loading}
-          >
-            {loading ? 'Verifying...' : 'Verify Code'}
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "Verifying…" : "Verify code"}
           </Button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Didn't receive the code?{' '}
+            Didn't receive the code?{" "}
             <button
               type="button"
               onClick={handleResend}
               disabled={countdown > 0 || resending}
               className={`font-semibold ${
                 countdown > 0 || resending
-                  ? 'text-gray-400 cursor-not-allowed'
-                  : 'text-emerald-600 hover:text-emerald-700'
+                  ? "cursor-not-allowed text-gray-400"
+                  : "text-emerald-600 hover:text-emerald-700"
               }`}
             >
               {resending
-                ? 'Resending...'
+                ? "Resending…"
                 : countdown > 0
-                ? `Resend in ${countdown}s`
-                : 'Resend Code'}
+                  ? `Resend in ${countdown}s`
+                  : "Resend code"}
             </button>
           </p>
         </div>
 
         <div className="mt-4 text-center">
-          <button
-            type="button"
-            onClick={() => navigate('/login')}
-            className="text-sm text-gray-600 hover:text-gray-800"
-          >
-            Back to login
-          </button>
+          <Link to="/login" className="text-sm text-gray-600 hover:text-gray-800">
+            Back to sign in
+          </Link>
         </div>
       </div>
     </div>

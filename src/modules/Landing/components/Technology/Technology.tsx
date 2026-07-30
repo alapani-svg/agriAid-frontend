@@ -2,7 +2,7 @@ import Container from "../../../../shared/ui/Container";
 import Reveal from "../shared/Reveal";
 import SectionHeading from "../shared/SectionHeading";
 import { useT } from "../../../../shared/i18n/context";
-import { techIcons, techLabels } from "../../constants/landing.constants";
+import { techIcons } from "../../constants/landing.constants";
 
 export default function Technology() {
   const t = useT();
@@ -35,18 +35,6 @@ export default function Technology() {
             );
           })}
         </div>
-
-        <Reveal className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <span className="text-sm text-gray-500">{t.tech.builtOn}</span>
-          {techLabels.map((label) => (
-            <span
-              key={label}
-              className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700"
-            >
-              {label}
-            </span>
-          ))}
-        </Reveal>
       </Container>
     </section>
   );

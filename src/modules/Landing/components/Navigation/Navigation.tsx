@@ -50,7 +50,7 @@ export default function Navigation() {
         >
           <button
             onClick={() => scrollToId("top")}
-            aria-label="AgriAid home"
+            aria-label="agriAid home"
             className="cursor-pointer transition-transform duration-200 hover:scale-105"
           >
             <LogoBadge badgeClassName="h-12 w-12" wordmarkClassName="text-xl text-gray-900" />

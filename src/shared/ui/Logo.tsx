@@ -8,7 +8,7 @@ export default function Logo({
   return (
     <img
       src="/agriAid-logo.png"
-      alt="AgriAid Logo"
+      alt="agriAid Logo"
       className={`h-10 w-auto ${className || ''}`}
     />
   );

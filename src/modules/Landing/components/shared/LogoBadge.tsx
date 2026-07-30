@@ -21,7 +21,7 @@ export default function LogoBadge({
       >
         <img
           src="/agriAid-logo.png"
-          alt="AgriAid logo"
+          alt="agriAid logo"
           className="h-full w-full rounded-xl object-contain"
         />
       </span>
@@ -32,7 +32,7 @@ export default function LogoBadge({
             wordmarkClassName ?? "text-gray-900",
           )}
         >
-          Agri<span className="text-emerald-600">Aid</span>
+          agri<span className="text-emerald-600">Aid</span>
         </span>
       )}
     </span>

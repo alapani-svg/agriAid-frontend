@@ -71,7 +71,7 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row">
           <p className="text-xs text-emerald-100/60">
-            © {year} AgriAid. {t.footer.rights}
+            © {year} agriAid. {t.footer.rights}
           </p>
           <div className="flex gap-6 text-xs">
             <a href="#" className="text-emerald-100/70 transition hover:text-white">

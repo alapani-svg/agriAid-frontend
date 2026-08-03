@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../../shared/ui/Button";
 import TextField from "../../../../shared/ui/TextField";
 import { persistSession, resendOtp, verifyOtp } from "../../api/authApi";
+import { homePathForUser } from "../../utils/roleRoutes";
 
 export default function OTPVerify() {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ export default function OTPVerify() {
       });
 
       persistSession(data.token, data.user);
-      navigate("/dashboard", { replace: true });
+      navigate(homePathForUser(data.user), { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -101,7 +102,7 @@ export default function OTPVerify() {
             <span className="font-medium text-gray-800">{userEmail}</span>
           </p>
           <p className="mt-1 text-xs text-gray-500">
-            Check your Mailtrap inbox while developing locally.
+            Check your email (or local mail log) for the 6-digit code.
           </p>
         </div>
 

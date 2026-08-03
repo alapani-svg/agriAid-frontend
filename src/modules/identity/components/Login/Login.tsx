@@ -12,6 +12,7 @@ import { homePathForUser, normalizeRole } from "../../utils/roleRoutes";
 interface LoginFormData {
   email: string;
   password: string;
+  remember: boolean;
 }
 
 export default function Login() {
@@ -19,6 +20,7 @@ export default function Login() {
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
+    remember: true,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -32,21 +34,23 @@ export default function Login() {
       const data = await loginUser({
         email: formData.email.trim(),
         password: formData.password,
+        remember: formData.remember,
       });
 
-      // Returning user (already verified once) → go straight to role dashboard
       if (!data.requires_otp && data.token) {
         const user = {
           ...data.user,
           role: normalizeRole(data.user.role),
         };
-        persistSession(data.token, user);
+        persistSession(data.token, user, {
+          remember: data.remember ?? formData.remember,
+          token_expires_at: data.token_expires_at,
+        });
         navigate(homePathForUser(user), { replace: true });
         return;
       }
 
-      // First-time / pending → OTP required
-      persistPendingUser(data.user);
+      persistPendingUser(data.user, data.remember ?? formData.remember);
       navigate("/otp-verify", { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
@@ -56,9 +60,10 @@ export default function Login() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, type, checked, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -118,6 +123,20 @@ export default function Login() {
               </Link>
             </div>
           </div>
+
+          <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
+            <input
+              type="checkbox"
+              name="remember"
+              checked={formData.remember}
+              onChange={handleChange}
+              className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+            />
+            <span>
+              Remember me{" "}
+              <span className="text-gray-500">(stay signed in for 30 days)</span>
+            </span>
+          </label>
 
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Signing in…" : "Sign in"}

@@ -16,6 +16,7 @@ export default function OTPVerify() {
 
   const userId = localStorage.getItem("user_id");
   const userEmail = localStorage.getItem("user_email");
+  const remember = sessionStorage.getItem("remember_me") === "1";
 
   useEffect(() => {
     if (!userId) {
@@ -53,6 +54,7 @@ export default function OTPVerify() {
         user_id: userId,
         code: otp,
         purpose: "login",
+        remember,
       });
 
       const user = {
@@ -60,11 +62,12 @@ export default function OTPVerify() {
         role: normalizeRole(data.user.role),
       };
 
-      persistSession(data.token, user);
+      persistSession(data.token, user, {
+        remember: data.remember ?? remember,
+        token_expires_at: data.token_expires_at,
+      });
 
-      // Go straight to role dashboard — never via /dashboard hub
-      const target = homePathForUser(user);
-      navigate(target, { replace: true });
+      navigate(homePathForUser(user), { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {

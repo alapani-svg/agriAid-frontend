@@ -18,6 +18,8 @@ export type LoginResponse = {
   message: string;
   requires_otp: boolean;
   token?: string;
+  remember?: boolean;
+  token_expires_at?: string | null;
 };
 
 type ApiErrorBody = {
@@ -93,6 +95,7 @@ export async function registerUser(payload: {
 export async function loginUser(payload: {
   email: string;
   password: string;
+  remember?: boolean;
 }): Promise<LoginResponse> {
   return postJson("/api/auth/login", payload);
 }
@@ -116,7 +119,14 @@ export async function verifyOtp(payload: {
   user_id: string;
   code: string;
   purpose?: string;
-}): Promise<{ token: string; user: AuthUser; message: string }> {
+  remember?: boolean;
+}): Promise<{
+  token: string;
+  user: AuthUser;
+  message: string;
+  remember?: boolean;
+  token_expires_at?: string | null;
+}> {
   return postJson("/api/otp/verify", { purpose: "login", ...payload });
 }
 
@@ -136,16 +146,28 @@ export async function logoutUser(): Promise<void> {
   }
 }
 
-export function persistPendingUser(user: AuthUser) {
+export function persistPendingUser(user: AuthUser, remember = false) {
   localStorage.setItem("user_id", user.id);
   localStorage.setItem("user_email", user.email);
+  sessionStorage.setItem("remember_me", remember ? "1" : "0");
 }
 
-export function persistSession(token: string, user: AuthUser) {
+export function persistSession(
+  token: string,
+  user: AuthUser,
+  opts?: { remember?: boolean; token_expires_at?: string | null },
+) {
   localStorage.setItem("auth_token", token);
   localStorage.setItem("user_data", JSON.stringify(user));
+  localStorage.setItem("remember_me", opts?.remember ? "1" : "0");
+  if (opts?.token_expires_at) {
+    localStorage.setItem("token_expires_at", opts.token_expires_at);
+  } else {
+    localStorage.removeItem("token_expires_at");
+  }
   localStorage.removeItem("user_id");
   localStorage.removeItem("user_email");
+  sessionStorage.removeItem("remember_me");
 }
 
 export function clearSession() {
@@ -153,4 +175,11 @@ export function clearSession() {
   localStorage.removeItem("user_data");
   localStorage.removeItem("user_id");
   localStorage.removeItem("user_email");
+  localStorage.removeItem("remember_me");
+  localStorage.removeItem("token_expires_at");
+  sessionStorage.removeItem("remember_me");
+}
+
+export function isRemembered(): boolean {
+  return localStorage.getItem("remember_me") === "1";
 }

@@ -79,17 +79,27 @@ export default function Login() {
             autoComplete="email"
           />
 
-          <TextField
-            label="Password"
-            id="password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="••••••••"
-            required
-            autoComplete="current-password"
-          />
+          <div>
+            <TextField
+              label="Password"
+              id="password"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="••••••••"
+              required
+              autoComplete="current-password"
+            />
+            <div className="mt-2 text-right">
+              <Link
+                to="/forgot-password"
+                className="text-sm font-semibold text-emerald-600 hover:text-emerald-700"
+              >
+                Forgot password?
+              </Link>
+            </div>
+          </div>
 
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Signing in…" : "Sign in"}

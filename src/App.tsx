@@ -4,6 +4,8 @@ import Navigation from "./modules/Landing/components/Navigation/Navigation";
 import Login from "./modules/identity/components/Login/Login";
 import Register from "./modules/identity/components/Register/Register";
 import OTPVerify from "./modules/identity/components/OTPVerify/OTPVerify";
+import ForgotPassword from "./modules/identity/components/ForgotPassword/ForgotPassword";
+import ResetPassword from "./modules/identity/components/ResetPassword/ResetPassword";
 import Dashboard from "./modules/identity/pages/Dashboard";
 import RoleDashboard from "./modules/identity/pages/RoleDashboard";
 import FarmerOperationsPage from "./modules/operations/pages/FarmerOperationsPage";
@@ -41,9 +43,24 @@ export default function App() {
             </GuestOnly>
           }
         />
+        <Route
+          path="/forgot-password"
+          element={
+            <GuestOnly>
+              <ForgotPassword />
+            </GuestOnly>
+          }
+        />
+        <Route
+          path="/reset-password"
+          element={
+            <GuestOnly>
+              <ResetPassword />
+            </GuestOnly>
+          }
+        />
         <Route path="/otp-verify" element={<OTPVerify />} />
 
-        {/* Auth hub → role home */}
         <Route
           path="/dashboard"
           element={
@@ -53,7 +70,6 @@ export default function App() {
           }
         />
 
-        {/* Farmer (Module 2) */}
         <Route
           path="/operations"
           element={
@@ -63,7 +79,6 @@ export default function App() {
           }
         />
 
-        {/* Role workspaces */}
         <Route
           path="/dashboard/warehouse"
           element={

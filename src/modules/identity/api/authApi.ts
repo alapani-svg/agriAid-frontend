@@ -90,6 +90,21 @@ export async function loginUser(payload: {
   return postJson("/api/auth/login", payload);
 }
 
+export async function forgotPassword(payload: {
+  email: string;
+}): Promise<{ message: string; email: string }> {
+  return postJson("/api/auth/forgot-password", payload);
+}
+
+export async function resetPassword(payload: {
+  email: string;
+  code: string;
+  password: string;
+  password_confirmation: string;
+}): Promise<{ message: string }> {
+  return postJson("/api/auth/reset-password", payload);
+}
+
 export async function verifyOtp(payload: {
   user_id: string;
   code: string;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../shared/ui/Button";
 import { clearSession, logoutUser, type AuthUser } from "../api/authApi";
 import { ROLE_OPTIONS } from "../constants/signup";
@@ -18,7 +18,11 @@ export default function Dashboard() {
     }
 
     try {
-      setUser(JSON.parse(raw) as AuthUser);
+      const parsed = JSON.parse(raw) as AuthUser;
+      setUser(parsed);
+      if (parsed.role === "farmer") {
+        navigate("/operations", { replace: true });
+      }
     } catch {
       clearSession();
       navigate("/login", { replace: true });
@@ -61,20 +65,20 @@ export default function Dashboard() {
       </header>
 
       <main className="mx-auto max-w-5xl px-4 py-10">
-        <div className="rounded-2xl border border-emerald-100 bg-white p-8 shadow-sm">
+        <div className="liquid-glass rounded-2xl p-8">
           <h2 className="font-headline text-2xl font-bold text-gray-900">
             Welcome, {user.name}
           </h2>
           <p className="mt-2 text-gray-600">{user.email}</p>
 
           <dl className="mt-6 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-xl bg-emerald-50 px-4 py-3">
+            <div className="rounded-xl bg-emerald-50/80 px-4 py-3">
               <dt className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
                 Role
               </dt>
               <dd className="mt-1 font-medium text-gray-900">{roleLabel}</dd>
             </div>
-            <div className="rounded-xl bg-emerald-50 px-4 py-3">
+            <div className="rounded-xl bg-emerald-50/80 px-4 py-3">
               <dt className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
                 Region
               </dt>
@@ -82,7 +86,7 @@ export default function Dashboard() {
                 {user.region || "—"}
               </dd>
             </div>
-            <div className="rounded-xl bg-emerald-50 px-4 py-3">
+            <div className="rounded-xl bg-emerald-50/80 px-4 py-3">
               <dt className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
                 Status
               </dt>
@@ -90,7 +94,7 @@ export default function Dashboard() {
                 {user.status || "active"}
               </dd>
             </div>
-            <div className="rounded-xl bg-emerald-50 px-4 py-3">
+            <div className="rounded-xl bg-emerald-50/80 px-4 py-3">
               <dt className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
                 Organisation
               </dt>
@@ -100,11 +104,16 @@ export default function Dashboard() {
             </div>
           </dl>
 
-          <p className="mt-6 text-sm leading-relaxed text-gray-500">
-            Your workspace is scoped to your role. Farmers document activity;
-            warehouses certify stock; lenders review scores; buyers trade;
-            government sees regional reporting.
-          </p>
+          {user.role === "farmer" && (
+            <div className="mt-6">
+              <Link
+                to="/operations"
+                className="inline-flex rounded-xl bg-[#026e00] px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-[#015200]"
+              >
+                Open farmer operations →
+              </Link>
+            </div>
+          )}
         </div>
       </main>
     </div>

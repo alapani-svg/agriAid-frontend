@@ -5,6 +5,7 @@ import Login from "./modules/identity/components/Login/Login";
 import Register from "./modules/identity/components/Register/Register";
 import OTPVerify from "./modules/identity/components/OTPVerify/OTPVerify";
 import Dashboard from "./modules/identity/pages/Dashboard";
+import FarmerOperationsPage from "./modules/operations/pages/FarmerOperationsPage";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/otp-verify" element={<OTPVerify />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/operations" element={<FarmerOperationsPage />} />
       </Routes>
     </Router>
   );

@@ -17,9 +17,15 @@ const ROLE_HOME: Record<string, string> = {
   admin: "/dashboard/admin",
 };
 
+/** Normalize role string from API / localStorage. */
+export function normalizeRole(role?: string | null): AppRole {
+  const r = (role || "farmer").toLowerCase().trim();
+  if (r in ROLE_HOME) return r as AppRole;
+  return "farmer";
+}
+
 export function homePathForRole(role?: string | null): string {
-  if (!role) return "/dashboard";
-  return ROLE_HOME[role] ?? "/dashboard";
+  return ROLE_HOME[normalizeRole(role)];
 }
 
 export function homePathForUser(user: Pick<AuthUser, "role"> | null | undefined): string {

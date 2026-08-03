@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../../shared/ui/Button";
 import TextField from "../../../../shared/ui/TextField";
 import { persistSession, resendOtp, verifyOtp } from "../../api/authApi";
-import { homePathForUser } from "../../utils/roleRoutes";
+import { homePathForUser, normalizeRole } from "../../utils/roleRoutes";
 
 export default function OTPVerify() {
   const navigate = useNavigate();
@@ -55,8 +55,16 @@ export default function OTPVerify() {
         purpose: "login",
       });
 
-      persistSession(data.token, data.user);
-      navigate(homePathForUser(data.user), { replace: true });
+      const user = {
+        ...data.user,
+        role: normalizeRole(data.user.role),
+      };
+
+      persistSession(data.token, user);
+
+      // Go straight to role dashboard — never via /dashboard hub
+      const target = homePathForUser(user);
+      navigate(target, { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -73,7 +81,7 @@ export default function OTPVerify() {
 
     try {
       await resendOtp({ user_id: userId, purpose: "login" });
-      setInfo("A new code was sent to your email.");
+      setInfo("A new code was sent to your email inbox.");
       setCountdown(60);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to resend code");
@@ -98,11 +106,11 @@ export default function OTPVerify() {
             Verify your identity
           </h1>
           <p className="mt-2 text-gray-600">
-            Enter the 6-digit code sent to{" "}
+            We sent a 6-digit code to{" "}
             <span className="font-medium text-gray-800">{userEmail}</span>
           </p>
           <p className="mt-1 text-xs text-gray-500">
-            Check your email (or local mail log) for the 6-digit code.
+            Check your email inbox (and spam folder) for the agriAid message.
           </p>
         </div>
 
@@ -135,7 +143,7 @@ export default function OTPVerify() {
           />
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Verifying…" : "Verify code"}
+            {loading ? "Verifying…" : "Verify & open dashboard"}
           </Button>
         </form>
 

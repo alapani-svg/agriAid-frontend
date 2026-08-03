@@ -36,6 +36,7 @@ export default function Register() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const selectedRole = useMemo(
     () => ROLE_OPTIONS.find((r) => r.value === formData.role),
@@ -45,6 +46,7 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
 
     if (!formData.role) {
       setError("Please select your role on the platform.");
@@ -83,7 +85,15 @@ export default function Register() {
       });
 
       persistPendingUser(data.user);
-      navigate("/otp-verify");
+
+      setSuccess(
+        `Account created. A 6-digit verification code was sent to ${formData.email.trim()}. Check your inbox to continue.`,
+      );
+
+      // Short pause so the user can read the email notice
+      setTimeout(() => {
+        navigate("/otp-verify", { replace: true });
+      }, 1200);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
     } finally {
@@ -111,13 +121,19 @@ export default function Register() {
             Create your account
           </h1>
           <p className="mt-2 text-gray-600">
-            Choose your role and region so we open the right workspace for you.
+            Choose your role and region. We will email you a verification code.
           </p>
         </div>
 
         {error && (
           <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
             {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
+            {success}
           </div>
         )}
 
@@ -259,8 +275,17 @@ export default function Register() {
             autoComplete="new-password"
           />
 
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Creating account…" : "Sign up"}
+          <p className="text-xs text-gray-500">
+            After you submit, agriAid emails a 6-digit code to the address above.
+            You must enter that code before opening your role dashboard.
+          </p>
+
+          <Button type="submit" className="w-full" disabled={loading || !!success}>
+            {loading
+              ? "Creating account & sending code…"
+              : success
+                ? "Redirecting to verification…"
+                : "Sign up"}
           </Button>
         </form>
 

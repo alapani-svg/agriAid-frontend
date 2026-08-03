@@ -1,15 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { clearSession, type AuthUser } from "../api/authApi";
 import { homePathForUser } from "../utils/roleRoutes";
 
 /**
- * Hub route: sends each role to its own dashboard home.
+ * Hub: one redirect to the role home. Never targets itself.
  */
 export default function Dashboard() {
   const navigate = useNavigate();
+  const didRedirect = useRef(false);
 
   useEffect(() => {
+    if (didRedirect.current) return;
+    didRedirect.current = true;
+
     const token = localStorage.getItem("auth_token");
     const raw = localStorage.getItem("user_data");
 
@@ -20,7 +24,9 @@ export default function Dashboard() {
 
     try {
       const user = JSON.parse(raw) as AuthUser;
-      navigate(homePathForUser(user), { replace: true });
+      const target = homePathForUser(user);
+      // Absolute safety: never navigate to /dashboard from here
+      navigate(target === "/dashboard" ? "/operations" : target, { replace: true });
     } catch {
       clearSession();
       navigate("/login", { replace: true });

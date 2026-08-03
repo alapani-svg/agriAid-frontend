@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Button from "../../../shared/ui/Button";
 import TextField from "../../../shared/ui/TextField";
+import { homePathForRole, normalizeRole } from "../../identity/utils/roleRoutes";
 import {
   getFarmerMe,
   listHarvests,
@@ -109,10 +110,13 @@ export default function FarmerOperationsPage() {
       navigate("/login", { replace: true });
       return;
     }
-    if (user?.role && user.role !== "farmer" && user.role !== "admin") {
-      navigate("/dashboard", { replace: true });
+
+    const role = normalizeRole(user?.role);
+    if (role !== "farmer" && role !== "admin") {
+      navigate(homePathForRole(role), { replace: true });
       return;
     }
+
     void loadAll();
   }, [loadAll, navigate, user?.role]);
 
@@ -190,9 +194,11 @@ export default function FarmerOperationsPage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#f0f7f0]">
-      {/* ambient liquid orbs */}
       <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-[#00e600]/15 blur-3xl orb-drift" />
-      <div className="pointer-events-none absolute -right-16 top-40 h-80 w-80 rounded-full bg-emerald-400/20 blur-3xl orb-drift" style={{ animationDelay: "1.2s" }} />
+      <div
+        className="pointer-events-none absolute -right-16 top-40 h-80 w-80 rounded-full bg-emerald-400/20 blur-3xl orb-drift"
+        style={{ animationDelay: "1.2s" }}
+      />
       <div className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-teal-300/20 blur-3xl" />
 
       <header className="sticky top-0 z-30 border-b border-white/50 bg-white/55 backdrop-blur-xl">
@@ -242,7 +248,6 @@ export default function FarmerOperationsPage() {
           </div>
         )}
 
-        {/* KPI strip */}
         <section className="grid gap-4 sm:grid-cols-3">
           <div className="liquid-glass glass-shine rounded-3xl p-5 animate-fade-up">
             <div className="flex items-center gap-2 text-[#026e00]">
@@ -285,7 +290,6 @@ export default function FarmerOperationsPage() {
         </section>
 
         <div className="grid gap-6 lg:grid-cols-12">
-          {/* Record harvest */}
           <section className="liquid-glass-emerald glass-shine rounded-3xl p-6 lg:col-span-5 animate-fade-up">
             <div className="mb-4 flex items-center gap-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#026e00] text-white shadow-md">
@@ -382,7 +386,6 @@ export default function FarmerOperationsPage() {
             </form>
           </section>
 
-          {/* Profile */}
           <section className="liquid-glass glass-shine rounded-3xl p-6 lg:col-span-7 afd1">
             <h2 className="font-headline text-lg font-bold text-gray-900">
               Farmer profile
@@ -447,11 +450,8 @@ export default function FarmerOperationsPage() {
           </section>
         </div>
 
-        {/* Stock ledger */}
         <section className="liquid-glass glass-shine rounded-3xl p-6 afd2">
-          <h2 className="font-headline text-lg font-bold text-gray-900">
-            Stock ledger
-          </h2>
+          <h2 className="font-headline text-lg font-bold text-gray-900">Stock ledger</h2>
           <p className="mt-1 text-xs text-gray-500">
             Auto-updated when you record a harvest
           </p>
@@ -493,7 +493,6 @@ export default function FarmerOperationsPage() {
           )}
         </section>
 
-        {/* Harvest history */}
         <section className="liquid-glass glass-shine rounded-3xl p-6 afd3">
           <h2 className="font-headline text-lg font-bold text-gray-900">
             Harvest history
@@ -512,9 +511,7 @@ export default function FarmerOperationsPage() {
                   <div>
                     <p className="font-semibold text-gray-900">
                       {h.crop}{" "}
-                      <span className="text-xs font-normal text-gray-500">
-                        #{h.id}
-                      </span>
+                      <span className="text-xs font-normal text-gray-500">#{h.id}</span>
                     </p>
                     <p className="text-xs text-gray-600">
                       {h.mass_kg.toLocaleString()} kg · quality {h.quality_pct}%

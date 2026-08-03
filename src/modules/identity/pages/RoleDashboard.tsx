@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Building2,
@@ -12,7 +12,11 @@ import {
 import Button from "../../../shared/ui/Button";
 import { clearSession, logoutUser, type AuthUser } from "../api/authApi";
 import { ROLE_OPTIONS } from "../constants/signup";
-import { homePathForRole, ROLE_DASHBOARD_META } from "../utils/roleRoutes";
+import {
+  homePathForRole,
+  normalizeRole,
+  ROLE_DASHBOARD_META,
+} from "../utils/roleRoutes";
 
 const ICONS: Record<string, typeof Sprout> = {
   farmer: Sprout,
@@ -30,6 +34,7 @@ type Props = {
 export default function RoleDashboard({ expectedRole }: Props) {
   const navigate = useNavigate();
   const [user, setUser] = useState<AuthUser | null>(null);
+  const redirected = useRef(false);
 
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
@@ -42,10 +47,12 @@ export default function RoleDashboard({ expectedRole }: Props) {
 
     try {
       const parsed = JSON.parse(raw) as AuthUser;
-      setUser(parsed);
+      const role = normalizeRole(parsed.role);
+      setUser({ ...parsed, role });
 
-      const role = parsed.role || "farmer";
-      if (role !== expectedRole && role !== "admin") {
+      // Wrong role for this page → send once to their real home (not /dashboard hub)
+      if (!redirected.current && role !== expectedRole && role !== "admin") {
+        redirected.current = true;
         navigate(homePathForRole(role), { replace: true });
       }
     } catch {

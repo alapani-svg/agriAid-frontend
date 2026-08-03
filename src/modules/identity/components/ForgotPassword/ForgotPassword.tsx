@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../../shared/ui/Button";
 import TextField from "../../../../shared/ui/TextField";
+import AuthBrandHeader from "../../../../shared/ui/AuthBrandHeader";
 import { forgotPassword } from "../../api/authApi";
 
 export default function ForgotPassword() {
@@ -16,7 +17,6 @@ export default function ForgotPassword() {
     setError("");
     setInfo("");
     setLoading(true);
-
     try {
       const data = await forgotPassword({ email: email.trim() });
       setInfo(data.message);
@@ -37,31 +37,20 @@ export default function ForgotPassword() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-teal-50 px-4 py-12">
       <div className="w-full max-w-md rounded-2xl border border-emerald-100 bg-white/90 p-8 shadow-lg backdrop-blur">
-        <div className="mb-8 text-center">
-          <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600">
-            agriAid
-          </p>
-          <h1 className="mt-1 font-headline text-3xl font-bold text-gray-900">
-            Forgot password
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Enter your account email. We will send a 6-digit reset code if the
-            account exists.
-          </p>
-        </div>
-
+        <AuthBrandHeader
+          title="Forgot password"
+          subtitle="Enter your account email. We will send a 6-digit reset code if the account exists."
+        />
         {error && (
           <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
             {error}
           </div>
         )}
-
         {info && (
           <div className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
             {info}
           </div>
         )}
-
         <form onSubmit={handleSubmit} className="space-y-6">
           <TextField
             label="Email address"
@@ -74,22 +63,13 @@ export default function ForgotPassword() {
             required
             autoComplete="email"
           />
-
           <Button type="submit" className="w-full" disabled={loading || !!info}>
-            {loading
-              ? "Sending code…"
-              : info
-                ? "Check your email…"
-                : "Send reset code"}
+            {loading ? "Sending code…" : info ? "Check your email…" : "Send reset code"}
           </Button>
         </form>
-
         <p className="mt-6 text-center text-sm text-gray-600">
           Remembered it?{" "}
-          <Link
-            to="/login"
-            className="font-semibold text-emerald-600 hover:text-emerald-700"
-          >
+          <Link to="/login" className="font-semibold text-emerald-600 hover:text-emerald-700">
             Sign in
           </Link>
         </p>

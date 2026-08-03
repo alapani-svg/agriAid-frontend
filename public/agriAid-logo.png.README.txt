@@ -1,0 +1,6 @@
+Place the official circular agriAid logo PNG here as:
+
+  public/agriAid-logo.png
+
+Exact asset: green circle, hand holding seedling, white "agriAid" script.
+Recommended: 256x256 or 512x512 PNG with transparent or solid green background.

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../../shared/ui/Button";
 import TextField from "../../../../shared/ui/TextField";
+import AuthBrandHeader from "../../../../shared/ui/AuthBrandHeader";
 import {
   loginUser,
   persistPendingUser,
@@ -70,18 +71,10 @@ export default function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-teal-50 px-4 py-12">
       <div className="w-full max-w-md rounded-2xl border border-emerald-100 bg-white/90 p-8 shadow-lg backdrop-blur">
-        <div className="mb-8 text-center">
-          <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600">
-            agriAid
-          </p>
-          <h1 className="mt-1 font-headline text-3xl font-bold text-gray-900">
-            Welcome back
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Sign in with your email and password. OTP is only needed the first
-            time.
-          </p>
-        </div>
+        <AuthBrandHeader
+          title="Welcome back"
+          subtitle="Sign in with your email and password. OTP is only needed the first time."
+        />
 
         {error && (
           <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../../shared/ui/Button";
 import TextField from "../../../../shared/ui/TextField";
+import AuthBrandHeader from "../../../../shared/ui/AuthBrandHeader";
 import { persistPendingUser, registerUser } from "../../api/authApi";
 import {
   REGION_OPTIONS,
@@ -90,7 +91,6 @@ export default function Register() {
         `Account created. A 6-digit verification code was sent to ${formData.email.trim()}. Check your inbox to continue.`,
       );
 
-      // Short pause so the user can read the email notice
       setTimeout(() => {
         navigate("/otp-verify", { replace: true });
       }, 1200);
@@ -113,17 +113,10 @@ export default function Register() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-teal-50 px-4 py-12">
       <div className="w-full max-w-lg rounded-2xl border border-emerald-100 bg-white/90 p-8 shadow-lg backdrop-blur">
-        <div className="mb-8 text-center">
-          <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600">
-            agriAid
-          </p>
-          <h1 className="mt-1 font-headline text-3xl font-bold text-gray-900">
-            Create your account
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Choose your role and region. We will email you a verification code.
-          </p>
-        </div>
+        <AuthBrandHeader
+          title="Create your account"
+          subtitle="Choose your role and region. We will email you a verification code."
+        />
 
         {error && (
           <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
@@ -174,10 +167,7 @@ export default function Register() {
           />
 
           <div className="w-full">
-            <label
-              htmlFor="role"
-              className="mb-1 block text-sm font-medium text-slate-700"
-            >
+            <label htmlFor="role" className="mb-1 block text-sm font-medium text-slate-700">
               Role on agriAid
             </label>
             <select
@@ -199,10 +189,7 @@ export default function Register() {
           </div>
 
           <div className="w-full">
-            <label
-              htmlFor="region"
-              className="mb-1 block text-sm font-medium text-slate-700"
-            >
+            <label htmlFor="region" className="mb-1 block text-sm font-medium text-slate-700">
               Region (Cameroon)
             </label>
             <select
@@ -245,8 +232,7 @@ export default function Register() {
                 required
               />
               <p className="mt-1 text-xs text-gray-500">
-                Lenders, warehouses and government accounts need a code from
-                agriAid or your organisation.
+                Lenders, warehouses and government accounts need a code from agriAid or your organisation.
               </p>
             </div>
           )}
@@ -277,7 +263,6 @@ export default function Register() {
 
           <p className="text-xs text-gray-500">
             After you submit, agriAid emails a 6-digit code to the address above.
-            You must enter that code before opening your role dashboard.
           </p>
 
           <Button type="submit" className="w-full" disabled={loading || !!success}>
@@ -291,10 +276,7 @@ export default function Register() {
 
         <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link
-            to="/login"
-            className="font-semibold text-emerald-600 hover:text-emerald-700"
-          >
+          <Link to="/login" className="font-semibold text-emerald-600 hover:text-emerald-700">
             Sign in
           </Link>
         </p>

@@ -13,6 +13,13 @@ export type AuthUser = {
   status?: string;
 };
 
+export type LoginResponse = {
+  user: AuthUser;
+  message: string;
+  requires_otp: boolean;
+  token?: string;
+};
+
 type ApiErrorBody = {
   message?: string;
   error?: string;
@@ -79,14 +86,14 @@ export async function registerUser(payload: {
   region: string;
   organization?: string;
   access_code?: string;
-}): Promise<{ user: AuthUser; message: string }> {
+}): Promise<{ user: AuthUser; message: string; requires_otp?: boolean }> {
   return postJson("/api/auth/register", payload);
 }
 
 export async function loginUser(payload: {
   email: string;
   password: string;
-}): Promise<{ user: AuthUser; message: string }> {
+}): Promise<LoginResponse> {
   return postJson("/api/auth/login", payload);
 }
 

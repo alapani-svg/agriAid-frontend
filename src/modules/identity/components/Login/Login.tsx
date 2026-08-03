@@ -2,7 +2,12 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../../shared/ui/Button";
 import TextField from "../../../../shared/ui/TextField";
-import { loginUser, persistPendingUser } from "../../api/authApi";
+import {
+  loginUser,
+  persistPendingUser,
+  persistSession,
+} from "../../api/authApi";
+import { homePathForUser, normalizeRole } from "../../utils/roleRoutes";
 
 interface LoginFormData {
   email: string;
@@ -29,8 +34,20 @@ export default function Login() {
         password: formData.password,
       });
 
+      // Returning user (already verified once) → go straight to role dashboard
+      if (!data.requires_otp && data.token) {
+        const user = {
+          ...data.user,
+          role: normalizeRole(data.user.role),
+        };
+        persistSession(data.token, user);
+        navigate(homePathForUser(user), { replace: true });
+        return;
+      }
+
+      // First-time / pending → OTP required
       persistPendingUser(data.user);
-      navigate("/otp-verify");
+      navigate("/otp-verify", { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -56,7 +73,8 @@ export default function Login() {
             Welcome back
           </h1>
           <p className="mt-2 text-gray-600">
-            Sign in to access your agricultural financing dashboard
+            Sign in with your email and password. OTP is only needed the first
+            time.
           </p>
         </div>
 

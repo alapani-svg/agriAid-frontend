@@ -1,6 +1,5 @@
 import { Route } from "react-router-dom";
 import LandingPage from "../modules/Landing/pages/LandingPage";
-import Navigation from "../modules/Landing/components/Navigation/Navigation";
 import Login from "../modules/identity/components/Login/Login";
 import Register from "../modules/identity/components/Register/Register";
 import OTPVerify from "../modules/identity/components/OTPVerify/OTPVerify";
@@ -57,6 +56,3 @@ export function PublicRoutes() {
     </>
   );
 }
-
-// Keep Navigation import used via MainLayout; silence unused if tree-shaken
-void Navigation;
